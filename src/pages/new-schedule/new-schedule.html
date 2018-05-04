@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title class="center">Novo Compromisso</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label color="primary">Título</ion-label>
+    <ion-input placeholder="Tomar medicamento..." [(ngModel)]="title"></ion-input>
+  </ion-item>
+  <ion-grid class="grid-datepicker">
+    <ion-row>
+      <ion-col (click)="openDatePicker()">
+        <ion-item>
+          <ion-label>Data</ion-label>
+          <ion-input disabled type="text" [(ngModel)]="formatedDate"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col (click)="openTimePicker()">
+          <ion-item>
+            <ion-label>Hora</ion-label>
+            <ion-input disabled type="text" [(ngModel)]="formatedTime"></ion-input>
+          </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button full color="danger" (click)="close()">Cancelar</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button full (click)="save()">Salvar</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

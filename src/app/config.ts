@@ -1,10 +1,11 @@
 export let cfg = {
-  apiUrl: 'http://books.prodio.bg/api',
+  server: 'http://localhost:8000',
+  apiUrl: 'http://localhost:8000/api',
   tokenName: 'token',
   user: {
-    register: '/auth/signup',
-    login: '/auth/login',
-    refresh:'/refresh',
+    register: '/register',
+    login: '/authenticate',
+    refresh:'/authenticateRefresh',
   },
   books: '/books'
 };

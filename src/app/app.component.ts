@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {AuthService} from '../providers/auth-service';
+import {UserService} from '../providers/user-service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -19,7 +19,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public authService: AuthService,
+    public userService: UserService,
     translate: TranslateService) {
 
     this.initializeApp();
@@ -29,7 +29,11 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       {title: 'page.profile', component: 'ProfilePage'},
-      {title: 'page.books.list', component: 'BooksPage'},
+      {title: 'page.journey', component: 'JourneyPage'},
+      {title: 'page.monitor', component: 'MonitorPage'},
+      {title: 'page.social', component: 'SocialPage'},
+      {title: 'page.calendar', component: 'CalendarPage'},
+      {title: 'page.surgery', component: 'SurgeryPage'},
       {title: 'page.logout', component: 'LoginPage', method: 'logout'}
     ];
 
@@ -41,14 +45,13 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.authService.startupTokenRefresh();
     });
   }
 
   openPage(page) {
 
     if (page.method && page.method === 'logout') {
-      this.authService.logout();
+      this.userService.logout();
     }
 
     this.nav.setRoot(page.component);

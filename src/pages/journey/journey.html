@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.journey' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="padding">
+  <br>
+  <div class="center">Você já perdeu <b>7kg</b></div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button full>
+          <ion-icon name="ios-image"></ion-icon>&nbsp;
+          Fotos
+        </button>
+      </ion-col>
+      <ion-col>
+          <button ion-button full>
+            <ion-icon name="md-analytics"></ion-icon>&nbsp;
+            Pesagens
+          </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+    <progress-bar [progress]="loadProgress"></progress-bar>
+</ion-footer>

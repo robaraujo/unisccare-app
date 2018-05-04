@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, MenuController} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
-import {AuthService} from '../../providers/auth-service';
+import {UserService} from '../../providers/user-service';
 
 
 @IonicPage()
@@ -20,7 +20,7 @@ export class RegisterPage {
     public menuCtrl: MenuController,
     public storage: Storage,
     public formBuilder: FormBuilder,
-    public authService: AuthService) {
+    public authService: UserService) {
 
     this.regData = this.formBuilder.group({
       name: ['', Validators.required],

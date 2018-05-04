@@ -1,0 +1,36 @@
+<!--
+  Generated template for the SurgeryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Surgery</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <!--TODO add !youAlreadyRate-->
+  <div *ngIf="!youAlreadyRate" class="center">
+    Você ainda não avaliou o seu cirurgião <b>{{userService.staffInfo('name')}}</b>. Avalie agora:
+    <rating [(ngModel)]="youRateValue" readOnly="false" (ngModelChange)="youRateChange($event)"></rating>
+  </div>
+  <hr>
+  <h4 class="center">Avaliações</h4>
+  <ion-grid class="med-list">
+    <ion-row *ngFor="let med of staffs">
+      <ion-col col-3 class="col-img">
+        <img [src]="staffService.getPicture(med)">
+      </ion-col>
+      <ion-col class="center">
+        <div class="med-name">{{med.name}}</div>
+        <rating [(ngModel)]="med.avarage" readOnly="true"></rating>
+        <div class="med-count-ratings">{{med.total_ratings}} avaliações | {{med.total_comments}} comentários</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

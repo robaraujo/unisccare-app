@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, MenuController} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
-import {AuthService} from '../../providers/auth-service';
+import {UserService} from '../../providers/user-service';
 
 import {UserModel} from '../../models/user.model';
 
@@ -14,7 +14,6 @@ import {UserModel} from '../../models/user.model';
 export class LoginPage {
 
   private loginData: FormGroup;
-  public user: UserModel;
 
   constructor(
     public navCtrl: NavController,
@@ -22,7 +21,7 @@ export class LoginPage {
     public menuCtrl: MenuController,
     public storage: Storage,
     public formBuilder: FormBuilder,
-    public authService: AuthService) {
+    public userService: UserService) {
 
     this.loginData = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
@@ -37,7 +36,7 @@ export class LoginPage {
 
   login() {
     //use this.loginData.value to authenticate the user
-    this.authService.login(this.loginData.value)
+    this.userService.login(this.loginData.value)
       .then(() => this.redirectToHome())
       .catch(e => console.log("login error", e));
   }

@@ -1,0 +1,19 @@
+page-surgery {
+    .med-list {
+        .col-img {
+            img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+            }
+        }
+        .med-name {
+            font-weight: bold;
+            font-size: 14pt;
+        }
+        ion-row {
+            border-bottom: 1px solid #dadada;
+        }
+    }
+
+}

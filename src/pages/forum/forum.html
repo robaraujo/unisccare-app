@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.forum' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="padding">
+    <div class="title1">
+      {{forum.name}}<br>
+      <small>
+        criado por {{userService.getFullname(forum.user)}}
+        <span am-time-ago="forum.created_at"></span>
+      </small>
+    </div>
+
+    <button ion-button full (click)="addResposta()">
+      Adicionar resposta
+    </button>
+    <div class="list">
+        <div ion-item class="item-avatar" *ngFor='let post of posts'>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-3>
+                  <img [src]="userService.getPicture(post.user)">
+              </ion-col>
+              <ion-col>
+                  <h2>{{post.text}}</h2>
+                  <p>por {{userService.getFullname(post.user)}}</p>
+                  <div class="post-date" am-time-ago="post.created_at"></div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+    </div>
+  </ion-content>

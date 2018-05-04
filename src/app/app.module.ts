@@ -6,10 +6,14 @@ import {MyApp} from './app.component';
 import {HttpModule, Http} from '@angular/http';
 import {AuthHttp, AuthConfig,JwtHelper} from 'angular2-jwt';
 import {Storage} from '@ionic/storage';
-import {AuthService} from '../providers/auth-service';
-import {BooksService} from '../providers/books-service';
+import {Global} from '../helpers/global';
+import {UserService} from '../providers/user-service';
+import {StaffService} from '../providers/staff-service';
+import {ScheduleService} from '../providers/schedule-service';
+import {SocialService} from '../providers/social-service';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
@@ -30,7 +34,7 @@ export function createTranslateLoader(http: Http) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
   ],
   imports: [
     BrowserModule,
@@ -53,14 +57,18 @@ export function createTranslateLoader(http: Http) {
     StatusBar,
     JwtHelper,
     SplashScreen,
+    DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {
       provide: AuthHttp,
       useFactory: getAuthHttp,
       deps: [Http]
     },
-    AuthService,
-    BooksService
+    UserService,
+    SocialService,
+    ScheduleService,
+    StaffService,
+    Global
   ]
 })
 export class AppModule {}

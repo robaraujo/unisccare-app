@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.calendar' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-navbar color="primary">
+        <ion-title>{{viewTitle}}</ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="newEvent()">Novo Compromisso</button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-navbar color="primary">
+        <ion-buttons>
+            <button ion-button [disabled]="isToday" (click)="today()">Hoje</button>
+            <button ion-button (click)="changeMode('month')">Mês</button>
+            <button ion-button (click)="changeMode('week')">Semana</button>
+            <button ion-button (click)="changeMode('day')">Dia</button>
+        </ion-buttons>
+    </ion-navbar>
+  
+  <calendar [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [currentDate]="calendar.currentDate"
+      (onCurrentDateChanged)="onCurrentDateChanged($event)"
+      (onRangeChanged)="reloadSource(startTime, endTime)"
+      (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onTimeSelected)="onTimeSelected($event)"
+      [locale]="pt"
+      step="30">
+    </calendar>
+    
+</ion-content>

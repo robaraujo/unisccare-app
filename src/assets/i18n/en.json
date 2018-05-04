@@ -20,6 +20,12 @@
     "delete": "Delete"
   },
   "page" : {
+    "journey" : "Minha Jornada",
+    "monitor" : "Monitoramento",
+    "social" : "Social",
+    "forum" : "Forum",
+    "calendar" : "Calendário",
+    "surgery" : "Cirurgiões",
     "login" : "Login",
     "logout" : "Logout",
     "register" : "New registration",

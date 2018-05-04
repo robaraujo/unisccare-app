@@ -1,0 +1,12 @@
+page-new-schedule {
+    .grid-datepicker {
+        padding: 0 !important;
+
+        ion-col {
+            padding: 0 !important;
+        }
+        .text-input[disabled] {
+            opacity: 1 !important;
+        }
+    }
+}

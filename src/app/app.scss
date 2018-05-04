@@ -14,3 +14,71 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+ .center {
+     text-align: center;
+ }
+
+ .btn-icon-top {
+     height: 50px;
+    .button-inner {
+        display: block;
+        ion-icon {
+            font-size: 30px;
+        }
+    }
+ }
+ion-toast {
+
+    z-index: 70000 !important;
+
+    &.toast-success {
+        font-weight: bold;
+        white-space: pre-line;
+        div.toast-wrapper {
+        background-color: $color-green;
+        font-size: 0.8em;
+        }
+    }
+
+    &.toast-error {
+        font-weight: bold;
+        white-space: pre-line;
+        div.toast-wrapper {
+        background-color: $color-red;
+        font-size: 0.8em;
+        }
+    }
+
+    &.toast-warning {
+        white-space: pre-line;
+        font-weight: bold;
+        div.toast-wrapper {
+        background-color: $color-yellow;
+        font-size: 0.8em;
+        }
+    }
+
+    .toast-wrapper {
+
+        .toast-message {
+        font-size: 1.2em;
+        }
+
+    }
+
+    &.toast-header {
+        bottom: 0.0em;
+    }
+}
+
+rating {
+    color: #fcb400;
+    font-size: 20pt;
+    ul {
+        margin: 5px;
+        padding: 0px !important;
+        li {
+            padding: 0 !important;
+        }
+    }
+}
