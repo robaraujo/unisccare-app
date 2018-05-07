@@ -2,19 +2,14 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { UserService } from '../../providers/user-service';
 import { SocialService } from '../../providers/social-service';
+import { ProtectedPage } from '../protected-page/protected-page';
 
-/**
- * Generated class for the SocialPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-social',
   templateUrl: 'social.html',
 })
-export class SocialPage {
+export class SocialPage extends ProtectedPage {
 
   public segment = 'feed';
   public foruns;
@@ -23,17 +18,15 @@ export class SocialPage {
   public user;
 
   constructor(public navCtrl: NavController,
+              public userService: UserService,
               public navParams: NavParams,
               private socialService: SocialService,
-              private loadingController: LoadingController,
-              public userService: UserService) {
+              private loadingController: LoadingController) {
 
-    this.user = {name: 'Roberto', email: 'asdasd'}
+    super(navCtrl, userService);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SocialPage');
-
     this.segmentChanged();
   }
 
@@ -43,27 +36,45 @@ export class SocialPage {
     loader.present();
 
     if (this.segment === 'forum') {
-      this.socialService.listForum().then(
+      
+      this.socialService.listForum().subscribe(
         (res:any)=> {
+            loader.dismiss();
+            this.foruns = res;
+        },
+        err=> {
           loader.dismiss();
-          this.foruns = res;
+          console.error(err);
         }
       );
+        
     } else if (this.segment === 'follow') {
-      this.socialService.listFollow().then(
+      
+      this.socialService.listFollow().subscribe(
         (res:any)=> {
           loader.dismiss();
           this.following = res;
+        },
+        err=> {
+          loader.dismiss();
+          console.error(err);
         }
       );
+
     } else {
-      this.socialService.listFeed().then(
+      
+      this.socialService.listFeed().subscribe(
         (res:any)=> {
           loader.dismiss();
           this.posts = res;
+        },
+        err=> {
+          loader.dismiss();
+          console.error(err);
         }
       );
     }
+
   }
 
   openForum(id) {

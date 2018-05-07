@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, MenuController} from 'ionic-angular';
-import {Storage} from '@ionic/storage';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {UserService} from '../../providers/user-service';
-
-import {UserModel} from '../../models/user.model';
+import { Global } from '../../helpers/global';
 
 @IonicPage()
 @Component({
@@ -19,30 +17,34 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
-    public storage: Storage,
+    public global: Global,
     public formBuilder: FormBuilder,
     public userService: UserService) {
 
     this.loginData = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
     });
   }
 
   ionViewDidLoad() {
+    if (this.userService.logged) {
+      return this.global.openPage('JourneyPage');
+    }
+    
     //hide menu when on the login page, regardless of the screen resolution
     this.menuCtrl.enable(false);
   }
 
   login() {
-    //use this.loginData.value to authenticate the user
-    this.userService.login(this.loginData.value)
-      .then(() => this.redirectToHome())
-      .catch(e => console.log("login error", e));
+    this.userService.login(this.loginData.value).subscribe(
+      res=> this.redirectToHome(),
+      err=> this.global.showMsg('Usuário ou senha inválido.', 'error')
+    );
   }
 
   redirectToHome() {
-    this.navCtrl.setRoot('ProfilePage');
+    this.navCtrl.setRoot('JourneyPage');
     this.menuCtrl.enable(true);
   }
 

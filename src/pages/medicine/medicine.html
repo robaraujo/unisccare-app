@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.medicine' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-navbar color="primary">
+      <ion-buttons end>
+          <button ion-button (click)="addMedicine()">Adicionar Ingestão</button>
+      </ion-buttons>
+  </ion-navbar>
+
+  <br>
+  <div *ngIf="userMedicines && userMedicines.length">
+    <h4 class="center">Medicamentos de hoje</h4>
+    <ion-grid>
+        <ion-row *ngFor="let row of userMedicines">
+          <ion-col col-8>
+              {{row.qtt}}x{{row.medicine.name}}
+          </ion-col>
+          <ion-col col-4>
+            {{moment(row.created_at).format('DD/MM HH:mm')}}
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </div>
+  <div class="center" *ngIf="userMedicines && !userMedicines.length">
+    Você ainda não ingeriu nenhum medicamanto hoje.
+  </div>
+
+</ion-content>

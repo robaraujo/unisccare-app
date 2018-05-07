@@ -1,23 +1,19 @@
-import {NavController, NavParams} from 'ionic-angular';
-import {Storage} from '@ionic/storage';
+import {NavController} from 'ionic-angular';
+import { UserService } from '../../providers/user-service';
 
 export class ProtectedPage {
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public storage: Storage) {
+    public navCtrl: NavController,
+    public userService: UserService) {
   }
 
   ionViewCanEnter() {
+    if (this.userService.logged) return true;
 
-    this.storage.get('id_token').then(id_token => {
-      if (id_token === null) {
-        this.navCtrl.setRoot('LoginPage');
-        return false;
-      }
+    setTimeout(()=> {
+      this.navCtrl.setRoot('LoginPage');
     });
-
-    return true;
+    return false;
   }
 }

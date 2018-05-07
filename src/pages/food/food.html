@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.food' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-navbar color="primary">
+      <ion-buttons end>
+          <button ion-button (click)="addFood()">Adicionar Ingestão</button>
+      </ion-buttons>
+  </ion-navbar>
+
+  <br>
+  <div *ngIf="userFoods && userFoods.length">
+    <h4 class="center">Alimentos de hoje</h4>
+    <ion-grid>
+        <ion-row *ngFor="let row of userFoods">
+          <ion-col col-8>
+              {{row.qtt}}x{{row.food.portion+row.food.unity}} {{row.food.name}}
+          </ion-col>
+          <ion-col col-4>
+            {{moment(row.created_at).format('DD/MM HH:mm')}}
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </div>
+  <div class="center" *ngIf="userFoods && !userFoods.length">
+    Você ainda não ingeriu nenhum alimento hoje.
+  </div>
+
+</ion-content>

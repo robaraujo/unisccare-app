@@ -1,0 +1,37 @@
+{
+  "label": {
+    "email": "Endereço de email",
+    "password": "Senha",
+    "name": "Nome",
+    "password": "Senha",
+    "confirm_password" : "Confirmar Senha",
+    "title" : "Título"
+  },
+  "button" : {
+    "login" : "Login",
+    "register" : "Registrar",
+    "new_registration" : "Novo Registro",
+    "forgotten_password" : "Esqueceu a senha?",
+    "submit" : "Enviar",
+    "edit": "Editar",
+    "delete": "Deletar"
+  },
+  "page" : {
+    "journey" : "Minha Jornada",
+    "photos" : "Suas Fotos",
+    "weights" : "Suas Pesagens",
+    "water" : "Consumo de Água",
+    "food" : "Consumo de Alimentos",
+    "medicine" : "Medicamentos",
+    "monitor" : "Monitoramento",
+    "social" : "Social",
+    "forum" : "Forum",
+    "calendar" : "Calendário",
+    "surgery" : "Cirurgiões",
+    "login" : "Login",
+    "logout" : "Sair",
+    "register" : "Novo Registro",
+    "forgotten_password" : "Recuperação de senha",
+    "profile" : "Perfil"
+  }
+}

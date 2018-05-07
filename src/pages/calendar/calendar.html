@@ -9,30 +9,36 @@
 
 <ion-content>
     <ion-navbar color="primary">
-        <ion-title>{{viewTitle}}</ion-title>
         <ion-buttons end>
             <button ion-button (click)="newEvent()">Novo Compromisso</button>
         </ion-buttons>
     </ion-navbar>
-    <ion-navbar color="primary">
-        <ion-buttons>
-            <button ion-button [disabled]="isToday" (click)="today()">Hoje</button>
-            <button ion-button (click)="changeMode('month')">Mês</button>
-            <button ion-button (click)="changeMode('week')">Semana</button>
-            <button ion-button (click)="changeMode('day')">Dia</button>
-        </ion-buttons>
-    </ion-navbar>
   
-  <calendar [eventSource]="eventSource"
-      [calendarMode]="calendar.mode"
-      [currentDate]="calendar.currentDate"
-      (onCurrentDateChanged)="onCurrentDateChanged($event)"
-      (onRangeChanged)="reloadSource(startTime, endTime)"
-      (onEventSelected)="onEventSelected($event)"
-      (onTitleChanged)="onViewTitleChanged($event)"
-      (onTimeSelected)="onTimeSelected($event)"
-      [locale]="pt"
-      step="30">
-    </calendar>
+    <ion-calendar [(ngModel)]="date"
+        (onChange)="onChange($event)"
+        [type]="type"
+        [options]="options"
+        [format]="'YYYY-MM-DD'">
+    </ion-calendar>
+
+    <div *ngIf="pageReady">
+        <div class="center" *ngIf="selectedDay && !schedules[selectedDay]">
+            Nenhum compromisso cadastrado no dia <b>{{selectedDay}}</b>.
+        </div>
+        <div *ngIf="schedules[selectedDay]">
+            <ion-grid class="schedules-list">
+                <ion-row *ngFor="let schedule of schedules[selectedDay]">
+                    <ion-col col-10>
+                        <div class="schedule-title">{{schedule.formatedTime}} - {{schedule.title}}</div>
+                    </ion-col>
+                    <ion-col col-2>
+                        <button ion-button color="danger" (click)="removeSchedule(schedule)">
+                            <ion-icon name="md-trash"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </div>
+    </div>
     
 </ion-content>

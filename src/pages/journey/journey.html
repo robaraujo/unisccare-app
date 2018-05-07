@@ -11,18 +11,26 @@
 
 <ion-content class="padding">
   <br>
-  <div class="center">Você já perdeu <b>7kg</b></div>
+  <div class="center" *ngIf="userService.lostWeight()">
+    Você já perdeu <b>{{userService.lostWeight()}}kg</b>
+  </div>
+  <div class="center" *ngIf="!userService.lostWeight() && userService.info('last_weight')">
+    Você ainda não perdeu nenhum kg.
+  </div>
+  <div class="center" *ngIf="!userService.lostWeight() && !userService.info('last_weight')">
+    Cadastre seus pesos diariamente para acompanhar sua evolução.
+  </div>
 
   <ion-grid>
     <ion-row>
       <ion-col>
-        <button ion-button full>
+        <button ion-button full (click)="openPage('PhotosPage')">
           <ion-icon name="ios-image"></ion-icon>&nbsp;
           Fotos
         </button>
       </ion-col>
       <ion-col>
-          <button ion-button full>
+          <button ion-button full (click)="openPage('WeightsPage')">
             <ion-icon name="md-analytics"></ion-icon>&nbsp;
             Pesagens
           </button>
@@ -31,5 +39,5 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-    <progress-bar [progress]="loadProgress"></progress-bar>
+    <progress-bar *ngIf="userService.timePercent()" [progress]="userService.timePercent()"></progress-bar>
 </ion-footer>

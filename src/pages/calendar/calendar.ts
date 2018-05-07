@@ -1,137 +1,112 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 import { ScheduleService } from '../../providers/schedule-service';
 import moment from 'moment';
 import { Global } from '../../helpers/global';
+import { CalendarModalOptions } from 'ion2-calendar';
+import { ProtectedPage } from '../protected-page/protected-page';
+import { UserService } from '../../providers/user-service';
 
 @IonicPage()
 @Component({
   selector: 'page-calendar',
   templateUrl: 'calendar.html',
 })
-export class CalendarPage {
-    // my
-    public lastMonth;
+export class CalendarPage extends ProtectedPage {
+    /** @var pageReady finish to get first calendar dates on server */
+    public pageReady: boolean = false;
+    
+    /** @var selectedDay day selected on calendar */
+    public selectedDay: any = null;
 
-    eventSource;
-    viewTitle;
-    isToday:boolean;
-  
-    calendar = {
-    mode: 'month',
-    currentDate: new Date(),
-    dateFormatter: {
-        formatMonthViewDay: function(date:Date) {
-            return date.getDate().toString();
-        },
-        formatMonthViewDayHeader: function(date:Date) {
-            return 'MonMH';
-        },
-        formatMonthViewTitle: function(date:Date) {
-            return 'testMT';
-        },
-        formatWeekViewDayHeader: function(date:Date) {
-            return 'MonWH';
-        },
-        formatWeekViewTitle: function(date:Date) {
-            return 'testWT';
-        },
-        formatWeekViewHourColumn: function(date:Date) {
-            return 'testWH';
-        },
-        formatDayViewHourColumn: function(date:Date) {
-            return 'testDH';
-        },
-        formatDayViewTitle: function(date:Date) {
-            return 'testDT';
-        }
-    }
-};
+    /** @var schedules list of schedules categorized by day */
+    public schedules: any = {};
 
+    /** @var date start date */
+    public date: string;
+    
+    /** @var type type of return onChange event */
+    public type: 'date';
+
+    /** @var lastMonth last selected month */
+    public lastMonth = '05';
+
+    /** @var calendar options of calendar directive */
+    public options: CalendarModalOptions = {
+        daysConfig: []
+    };
+
+    /** @var moment access moment o view */
+    public moment = moment;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 public scheduleService: ScheduleService,
+                public loadingCtrl: LoadingController,
+                public userService: UserService,
                 public global: Global,
                 private modalCtrl: ModalController
             ) {
-    }
 
-    ionViewDidLoad() {
-    }
-
-    onViewTitleChanged(title) {
-        this.viewTitle = title;
-    }
-
-    onEventSelected(event) {
-        console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
-    }
-
-    changeMode(mode) {
-        this.calendar.mode = mode;
-    }
-
-    today() {
-        this.calendar.currentDate = new Date();
-    }
-
-    onTimeSelected(ev) {
-        console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
-            (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
-    }
-
-    onCurrentDateChanged(event:Date) {
-
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        event.setHours(0, 0, 0, 0);
-        this.isToday = today.getTime() === event.getTime();
-
-        let month = moment(event).format('MM');
-        if (month === this.lastMonth) return;
-        this.lastMonth = month;
-
+        super(navCtrl, userService);
         this.getUpdatedSchedules();
     }
 
+    onChange(e) {
+        this.selectedDay = e.format('DD');
+        let month = e.format('MM');
+        
+        // month changed
+        if (this.lastMonth !== month) {
+            this.lastMonth = month;
+            this.getUpdatedSchedules();
+        }
+    }
+
     getUpdatedSchedules() {
-        this.scheduleService.getMonth(this.lastMonth)
-            .then((schedules) => this.formatSchedules(schedules))
-            .catch(e => this.global.showMsg('Não foi possível buscar seus compromissos.', 'error'));
+        this.scheduleService.getMonth(this.lastMonth).subscribe(
+            (schedules) => this.formatSchedules(schedules),
+            err=> {
+                this.pageReady = true;
+                this.global.showMsg('Não foi possível buscar seus compromissos.', 'error');
+            }
+        );
     }
 
     formatSchedules(schedlues) {
-        this.eventSource = [];
-        let startTime;
-        let endTime;
-
+        this.schedules = {};
+        const newOptions = {daysConfig: []};
+        
         schedlues.map(schedule=> {
-            startTime = moment(schedule.datehr).toDate();
-            endTime = moment(schedule.datehr).add(1, 'hours').toDate();
+            let date = moment(schedule.datehr);
+            let day = date.format('DD');
+            schedule.formatedTime = date.format('HH:mm');
 
-            this.eventSource.push({
-                title: schedule.title,
-                startTime: startTime,
-                endTime: endTime,
-                allDay: false
+            // catecorize schedules by day
+            if (!this.schedules[day]) {
+                this.schedules[day] = [];
+            }
+            this.schedules[day].push(schedule);
+
+            // add day to calendar options
+            newOptions.daysConfig.push({
+                date: date.toDate(),
+                marked: true
             });
         });
+
+        // workaround to show marked days on calendar
+        setTimeout(() => {
+            this.options = {
+                ...this.options,
+                ...newOptions
+            };
+        }, 2000);
+        this.pageReady = true;
     }
-
-
-    onRangeChanged(ev) {
-        console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
-    }
-
-    markDisabled = (date:Date) => {
-        var current = new Date();
-        current.setHours(0, 0, 0);
-        return date < current;
-    };
 
     newEvent() {
-        let modal = this.modalCtrl.create('new-schedule');
+        let modal = this.modalCtrl.create('calendar-form');
         modal.present();
         modal.onDidDismiss(msg=> {
             console.log(msg)
@@ -140,5 +115,22 @@ export class CalendarPage {
             this.global.showMsg('Compromisso criado com sucesso.', 'success');
             this.getUpdatedSchedules();
         })
+    }
+
+    removeSchedule(schedule) {
+        let loader = this.loadingCtrl.create();
+        loader.present();
+
+        this.scheduleService.remove(schedule.id).subscribe(
+            res=> {
+                loader.dismiss();
+                this.getUpdatedSchedules();
+                this.global.showMsg('Compromisso removido com sucesso.', 'success');
+            },
+            err=> {
+                loader.dismiss();
+                this.global.showMsg('Não foi possível remover este compromisso, tente mais tarde.', 'error');
+            }
+        )
     }
 }

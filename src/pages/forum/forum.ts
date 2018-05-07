@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavParams, LoadingController, AlertController, NavController } from 'ionic-angular';
 import { SocialService } from '../../providers/social-service';
 import { UserService } from '../../providers/user-service';
+import { Global } from '../../helpers/global';
+import { ProtectedPage } from '../protected-page/protected-page';
 
-/**
- * Generated class for the ForumPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-forum',
@@ -21,13 +17,9 @@ export class ForumPage {
 
   constructor(public navParams: NavParams,
               public loadingCtrl: LoadingController,
-              public userService: UserService,
               public alertCtrl: AlertController,
-              private socialService: SocialService
-      ) {
-  }
-
-  ionViewDidLoad() {
+              public global: Global,
+              private socialService: SocialService) {
   }
 
   ionViewCanEnter() {
@@ -39,8 +31,8 @@ export class ForumPage {
       let forumId = this.navParams.get('id');
       if (!forumId) reject();
 
-      this.socialService.getForum(forumId).then(
-        res=> {
+      this.socialService.getForum(forumId).subscribe(
+        (res:any)=> {
           this.forum = res.forum;
           this.posts = res.posts;
 
@@ -76,10 +68,11 @@ export class ForumPage {
               handler: data => {
                 if (!data.text) return;
                 
-                this.socialService.addPost(this.forum.id, data.text).then(
+                this.socialService.addPost(this.forum.id, data.text).subscribe(
                   res=> {
                     this.posts.unshift(res);
-                  }
+                  },
+                  err=> this.global.showMsg('Não foi possível enviar sua contribuição, tente mais tarde.', 'error')
                 )
               }
           },

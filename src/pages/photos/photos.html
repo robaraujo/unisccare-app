@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.photos' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-navbar color="primary">
+    <ion-buttons end>
+        <button ion-button (click)="sendPhoto()">Enviar Foto</button>
+    </ion-buttons>
+  </ion-navbar>
+  <h4 class="center">Ultimas fotos</h4>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 col-md-4 col-xl-3 *ngFor="let photo of photos">
+        <div class="image-container" [style.background-image]="getPhotoUrl(photo)"></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

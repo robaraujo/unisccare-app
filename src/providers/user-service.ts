@@ -1,124 +1,128 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
-import {Storage} from '@ionic/storage';
-import 'rxjs/add/operator/toPromise';
-import {UserModel} from '../models/user.model';
-import {CredentialsModel} from '../models/credentials.model';
-import {AuthHttp, JwtHelper, tokenNotExpired} from 'angular2-jwt';
-import {Observable} from 'rxjs/Rx';
-import *  as AppConfig from '../app/config';
+import {HttpClient} from '@angular/common/http';
+import {config} from '../app/config';
 import moment from 'moment';
+import 'rxjs/add/operator/do'
 
 @Injectable()
 export class UserService {
 
-  private cfg: any;
   public idToken: string;
   public logged:any;
   public refreshSubscription: any;
 
 
-  constructor(
-    private storage: Storage,
-    private http: Http,
-    private jwtHelper:JwtHelper,
-    private authHttp: AuthHttp) {
-
-    this.cfg = AppConfig.cfg;
-
-    this.storage.get('user').then(user => this.logged = user);
-    this.storage.get('token').then(token => this.idToken = token);
-
+  constructor(private http: HttpClient) {
+    let userCache = localStorage.getItem("user");
+    this.logged = userCache ? JSON.parse(userCache) : null;
+    this.idToken = localStorage.getItem("access_token");
   }
 
   register(userData) {
 
-    return this.http.post(this.cfg.apiUrl + this.cfg.user.register, userData)
-      .toPromise()
-      .then(data => {
-        this.saveData(data)
-        let rs = data.json();
-        this.idToken = rs.token;
-      })
-      .catch(e => console.log("reg error", e));
-
-
+    return this.http.post(config.apiUrl + config.user.register, userData).do(
+        data => this.saveData(data),
+        err=> console.log("reg error", err)
+    );
   }
 
   login(credentials) {
 
-    return this.http.post(this.cfg.apiUrl + this.cfg.user.login, credentials)
-      .toPromise()
-      .then(data => {
-         let rs = data.json();
-         this.saveData(data);
-         this.idToken = rs.token;
-      })
-      .catch(e => console.log('login error', e));
-
-
+    return this.http.post(config.apiUrl + config.user.login, credentials).do(
+      data => this.saveData(data),
+      err=> console.error(err)
+    );
   }
 
   saveData(data: any) {
+    this.saveDataUser(data.user);
+    localStorage.setItem("access_token", data.token);
+    this.idToken = data.token;
+  }
 
-    let rs = data.json();
-
-    this.storage.set("user", rs.user);
-    this.storage.set("id_token", rs.token);
+  saveDataUser(user) {
+    localStorage.setItem("user", JSON.stringify(user));
+    this.logged = user;
   }
 
   logout() {
     // stop function of auto refesh
-    this.storage.remove('user');
-    this.storage.remove('id_token');
-
+    localStorage.setItem("user", null);
+    localStorage.setItem("access_token", null);
+    this.logged = null;
+    this.idToken = null;
   }
 
-  isValid() {
-    return tokenNotExpired();
+  getFromServer() {
+    return this.http.get(config.apiUrl + '/authenticate/user').do(
+      data => this.saveDataUser(data),
+      err=> console.error(err)
+    );
+  }
+  
+  public info(field) {
+    return this.logged && this.logged[field] !== null ? this.logged[field] : null;
   }
 
+  public staffInfo(field) {
+    return this.logged && this.logged.staff && this.logged.staff[field] !== null ? this.logged.staff[field] : null;
+  }
+  getFullname(user = null) {
+    user = user || this.logged;
+    return user ? `${user.first_name} ${user.last_name}` : null;
+  }
 
+  getAddress(user = null) {
+    user = user || this.logged;
+    return user && user.city ? `${user.city} - ${user.state}` : null;
+  }
 
+  getPicture(user = null) {
+    user = user || this.logged;
+    if (!user) return null;
 
+    let pic = user.picture ? user.picture : 'empty.png';
+    return `http://${config.server}/img/users/${pic}`;
+  }
 
-    public info(field) {
-      return this.logged && this.logged[field] !== null ? this.logged[field] : null;
-    }
+  lostWeight() {
+    if (!this.logged) return null;
+    if (this.logged.first_weight < this.logged.last_weight || !this.logged.last_weight) return 0;
 
-    public staffInfo(field) {
-      return this.logged && this.logged.staff && this.logged.staff[field] !== null ? this.logged.staff[field] : null;
-    }
-    getFullname(user = null) {
-      user = user || this.logged;
-      return user ? `${user.first_name} ${user.last_name}` : null;
-    }
+    return this.logged.first_weight - this.logged.last_weight;
+  }
 
-    getAddress(user = null) {
-      user = user || this.logged;
-      return user && user.city ? `${user.city} - ${user.state}` : null;
-    }
+  /**
+   * Time elapsed after surgery
+   */
+  timeElapsed() {
+    if (!this.logged || !this.logged.dt_operation) return null;
 
-    getPicture(user = null) {
-      user = user || this.logged;
-      if (!user) return null;
+    let start = moment(this.logged.dt_operation, 'YYYY-MM-DD');
+    let end = moment();
+    var duration = moment.duration(end.diff(start));
+    let diff = Math.trunc(duration.asDays());
+    return diff;
+  }
 
-      let pic = user.picture ? user.picture : 'empty.png';
-      return this.cfg.server+'/img/users/'+pic;
-    }
+  /**
+   * Percento of time elapsed
+   */
+  timePercent() {
+    if (!this.logged || !this.logged.dt_operation || !this.logged.dt_end) return null;
 
-    lostWeight() {
-      if (!this.logged) return null;
-      return this.logged.first_weight - this.logged.last_weight;
-    }
+    let start = moment(this.logged.dt_operation, 'YYYY-MM-DD');
+    let end = moment(this.logged.dt_end, 'YYYY-MM-DD');
+    let now = moment();
 
-    timeElapsed() {
-      if (!this.logged) return null;
+    let daysElapsed:any = moment.duration(now.diff(start)).asDays();
+    let daysUntilEnd:any = moment.duration(end.diff(start)).asDays();
 
-      let start = moment(this.logged.dt_operation, 'YYYY-MM-DD');
-      let end = moment();
-      var duration = moment.duration(end.diff(start));
-      let diff = Math.trunc(duration.asDays());
-      return diff+' dias';
-    }
+    let percent = 100 * daysElapsed / daysUntilEnd;
+    let roundPercent = Math.trunc(percent);
+
+    return roundPercent >= 0 && roundPercent < 101 ? roundPercent : null;
+  }
+  
+
 }

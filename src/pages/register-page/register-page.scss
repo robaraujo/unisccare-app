@@ -1,10 +1,20 @@
 page-register-page {
-
+  .scroll-content {
+    padding-top: 0px !important;
+  }
+  h5 {
+    margin: 20px 0 0; 
+    font-weight: normal;
+  }
   ion-item.item-ios {
     padding-left: 0;
   }
 
+  ion-grid, ion-row, ion-col {
+    padding: 0 !important;
+  }
 
-
-
+  .text-input[disabled] {
+    opacity: 1 !important;
+  }
 }

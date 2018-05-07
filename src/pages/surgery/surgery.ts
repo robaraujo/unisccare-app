@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { StaffService } from '../../providers/staff-service';
 import { Global } from '../../helpers/global';
 import { UserService } from '../../providers/user-service';
+import { ProtectedPage } from '../protected-page/protected-page';
 
 /**
  * Generated class for the SurgeryPage page.
@@ -15,7 +16,7 @@ import { UserService } from '../../providers/user-service';
   selector: 'page-surgery',
   templateUrl: 'surgery.html',
 })
-export class SurgeryPage {
+export class SurgeryPage extends ProtectedPage {
 
   public youAlreadyRate: any;
   public staffs: any;
@@ -23,34 +24,36 @@ export class SurgeryPage {
   public youRateValue = 3;
 
   constructor(public navCtrl: NavController,
-              public staffService: StaffService,
               public userService: UserService,
+              public staffService: StaffService,
               private loadingCtrl: LoadingController,
               private global: Global,
               public navParams: NavParams) {
+
+    super(navCtrl, userService);
   }
 
-  ngOnInit()
-  {
+  ngOnInit() {
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.staffService.list()
-            .then((res) => {
-              this.ready = true;
-              loader.dismiss();
+    this.staffService.listRatings().subscribe(
+      (res:any) => {
+        this.ready = true;
+        loader.dismiss();
 
-              this.staffs = res.ratings;
-              this.youAlreadyRate = res.you_rate;
-              
-              this.staffs.map((staff, i)=> {
-                this.staffs[i]['avarage'] = parseFloat(this.staffs[i]['avarage']);
-              });
-            })
-            .catch(e => {
-              this.ready = true;
-              loader.dismiss();
-            });
+        this.staffs = res.staffs;
+        this.youAlreadyRate = res.you_rate;
+        
+        this.staffs.map((staff, i)=> {
+          this.staffs[i]['avarage'] = parseFloat(this.staffs[i]['avarage']);
+        });
+      },
+      err=> {
+        this.ready = true;
+        loader.dismiss();
+      }
+    );
   }
 
   youRateChange(e) {
@@ -64,16 +67,17 @@ export class SurgeryPage {
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.staffService.rate(this.userService.staffInfo('id'), this.youRateValue, ratingText)
-        .then((res) => {
-          loader.dismiss();
-          this.youAlreadyRate = 1;
-          this.global.showMsg('Avaliação efetuada com sucesso.', 'success');
-        })
-        .catch(e=>{
-          loader.dismiss();
-          this.global.showMsg('Não foi possível efetuar a avaliação.', 'error');
-        })
+    this.staffService.rate(this.userService.staffInfo('id'), this.youRateValue, ratingText).subscribe(
+      res=> {
+        loader.dismiss();
+        this.youAlreadyRate = 1;
+        this.global.showMsg('Avaliação efetuada com sucesso.', 'success');
+      },
+      err=> {
+        loader.dismiss();
+        this.global.showMsg('Não foi possível efetuar a avaliação.', 'error');
+      }
+    );
   }
 
 }

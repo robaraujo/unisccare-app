@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, MenuController} from 'ionic-angular';
-import {Storage} from '@ionic/storage';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {UserService} from '../../providers/user-service';
+import { Global } from '../../helpers/global';
 
 @IonicPage()
 @Component({
@@ -11,13 +11,13 @@ import {UserService} from '../../providers/user-service';
 })
 export class ForgotPage {
 
-  private forgotData: FormGroup;
+  public forgotData: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
-    public storage: Storage,
+    public global: Global,
     public formBuilder: FormBuilder,
     public userService: UserService) {
 
@@ -29,6 +29,10 @@ export class ForgotPage {
   }
 
   ionViewDidLoad() {
+    if (this.userService.logged) {
+      return this.global.openPage('JourneyPage');
+    }
+
     //hide menu when on the login page, regardless of the screen resolution
     this.menuCtrl.enable(false);
   }

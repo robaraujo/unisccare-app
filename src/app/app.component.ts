@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform} from 'ionic-angular';
+import {Nav, Platform, MenuController} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {UserService} from '../providers/user-service';
@@ -11,7 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'ProfilePage';
+  rootPage: any = 'JourneyPage';
 
   pages: Array<{title: string, component: any, method?: any}>;
 
@@ -19,16 +19,15 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
+    public menuCtrl: MenuController,
     public userService: UserService,
     translate: TranslateService) {
 
     this.initializeApp();
-
-    translate.setDefaultLang('en');
+    translate.setDefaultLang('pt');
 
     // used for an example of ngFor and navigation
     this.pages = [
-      {title: 'page.profile', component: 'ProfilePage'},
       {title: 'page.journey', component: 'JourneyPage'},
       {title: 'page.monitor', component: 'MonitorPage'},
       {title: 'page.social', component: 'SocialPage'},
@@ -55,5 +54,10 @@ export class MyApp {
     }
 
     this.nav.setRoot(page.component);
+  }
+
+  openProfilePage() {
+    this.openPage({title: 'page.profile', component: 'ProfilePage'});
+    this.menuCtrl.close();
   }
 }

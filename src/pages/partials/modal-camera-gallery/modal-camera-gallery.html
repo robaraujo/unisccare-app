@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <div>Adicionar Foto</div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item (click)="takePic('camera')">
+      Tirar Nova Foto
+    </ion-item>
+    <ion-item (click)="takePic('gallery')">
+      Buscar na Galeria
+    </ion-item>
+  </ion-list>
+</ion-content>

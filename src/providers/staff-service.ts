@@ -1,37 +1,32 @@
 import {Injectable} from '@angular/core';
-import 'rxjs/add/operator/toPromise';
-import {AuthHttp, JwtHelper, tokenNotExpired} from 'angular2-jwt';
-import *  as AppConfig from '../app/config';
+import {HttpClient} from '@angular/common/http';
+import {config} from '../app/config';
 
 
 @Injectable()
 export class StaffService {
 
-    private cfg: any;
-
-    constructor(private authHttp: AuthHttp) {
-        this.cfg = AppConfig.cfg;
+    constructor(private http: HttpClient) {
     }
 
     list() {
-        return this.authHttp.get(this.cfg.apiUrl + `/staffs`)
-            .toPromise()
-            .then(res=> {return res.json()});
+        return this.http.get(config.apiUrl + `/staffs`);
+    }
+
+    listRatings() {
+        return this.http.get(config.apiUrl + `/staffs/ratings`);
     }
 
     getPicture(staff) {
         let pic = staff.picture ? staff.picture : 'empty.png';
-        return this.cfg.server+'/img/staffs/'+pic;
+        return `http://${config.server}/img/staffs/${pic}`;
     }
 
     rate(staffId, rating, text) {
-        let data = {
+        return this.http.post(config.apiUrl + '/staffs/rate', {
             staff_id: staffId,
             rating: rating,
             text: text,
-        };
-        return this.authHttp.post(this.cfg.apiUrl + '/staff/rate', data)
-            .toPromise()
-            .then(res=> {return res.json()});
+        });
     }
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController, LoadingController } from 'ionic-angular';
 import {ProtectedPage} from '../protected-page/protected-page';
-import {Storage} from '@ionic/storage';
 import {UserService} from './../../providers/user-service';
 
 
@@ -14,16 +13,22 @@ export class ProfilePage extends ProtectedPage {
   
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public menuCtrl: MenuController,
-    public userService: UserService,
-    public storage: Storage) {
+    public loadingCtrl: LoadingController,
+    public userService: UserService) {
     
-    super(navCtrl, navParams, storage);
+    super(navCtrl, userService);
   }
 
   ionViewDidLoad() {
     this.menuCtrl.enable(true);
+    let loader = this.loadingCtrl.create();
+    loader.present();
+
+    this.userService.getFromServer().subscribe(
+      res=> loader.dismiss(),
+      err=> loader.dismiss()
+    )
   }
 
 }

@@ -1,35 +1,35 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
-import {IonicStorageModule} from '@ionic/storage';
-import {MyApp} from './app.component';
-import {HttpModule, Http} from '@angular/http';
-import {AuthHttp, AuthConfig,JwtHelper} from 'angular2-jwt';
-import {Storage} from '@ionic/storage';
-import {Global} from '../helpers/global';
-import {UserService} from '../providers/user-service';
-import {StaffService} from '../providers/staff-service';
-import {ScheduleService} from '../providers/schedule-service';
-import {SocialService} from '../providers/social-service';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { Crop } from '@ionic-native/crop';
+import { Camera } from '@ionic-native/camera';
+import { JwtModule } from '@auth0/angular-jwt';
+import { StatusBar } from '@ionic-native/status-bar';
 import { DatePicker } from '@ionic-native/date-picker';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { ImageResizer } from '@ionic-native/image-resizer';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
+import { MyApp } from './app.component';
+import { config } from '../app/config';
+import { Global } from '../helpers/global';
+import { UserService } from '../providers/user-service';
+import { StaffService } from '../providers/staff-service';
+import { PhotoService } from '../providers/photo-service';
+import { WaterService } from '../providers/water-service';
+import { FoodService } from '../providers/food-service';
+import { SocialService } from '../providers/social-service';
+import { WeightService } from '../providers/weight-service';
+import { MedicineService } from '../providers/medicine-service';
+import { ScheduleService } from '../providers/schedule-service';
 
-let storage = new Storage({});
-
-export function getAuthHttp(http) {
-  return new AuthHttp(new AuthConfig({
-    noJwtError: true,
-    globalHeaders: [{'Accept': 'application/json'}],
-    tokenGetter: (() => storage.get('id_token')),
-  }), http);
-}
-
-export function createTranslateLoader(http: Http) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -37,15 +37,24 @@ export function createTranslateLoader(http: Http) {
     MyApp,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, 
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot(),
-    HttpModule,
+    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [Http]
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
+    }),
+    JwtModule.forRoot({
+      config: {
+          tokenGetter: function() {
+              return localStorage.getItem('access_token');
+          },
+          whitelistedDomains: [config.server],
+          //blacklistedRoutes: ['localhost:3001/auth/']
       }
     })
   ],
@@ -55,19 +64,23 @@ export function createTranslateLoader(http: Http) {
   ],
   providers: [
     StatusBar,
-    JwtHelper,
     SplashScreen,
     DatePicker,
+    Crop,
+    ImageResizer,
+    Camera,
+    FileTransfer,
+
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {
-      provide: AuthHttp,
-      useFactory: getAuthHttp,
-      deps: [Http]
-    },
+    PhotoService,
     UserService,
     SocialService,
     ScheduleService,
     StaffService,
+    WeightService,
+    WaterService,
+    MedicineService,
+    FoodService,
     Global
   ]
 })

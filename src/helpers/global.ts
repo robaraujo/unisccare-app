@@ -1,12 +1,14 @@
 
 import { Injectable } from '@angular/core';
-import { ToastController} from 'ionic-angular';
+import { ToastController, App} from 'ionic-angular';
+import { UserService } from '../providers/user-service';
 
 @Injectable()
 export class Global
 {   
     constructor(private toastCtrl: ToastController,
-                ) {
+                private app: App,
+                private userServive: UserService) {
     }
     
     showMsg(message, type = 'info', time = 3000) {
@@ -19,5 +21,10 @@ export class Global
         })
         toast.present();
         return toast;
+    }
+
+    openPage(page) {
+        let nav = this.app.getRootNav();
+        return nav.setRoot(page);
     }
 };

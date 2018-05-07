@@ -1,0 +1,28 @@
+page-social-user {
+    .social-header {
+        img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+        p {
+            color: #aaa;
+            padding: 0;
+            margin: 0;
+        }
+        h2 {
+            margin: 5px;
+            color:#565656;
+        }
+    }
+
+
+    .item-post, .item-forum, .item-following{
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+
+}

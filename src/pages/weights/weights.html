@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.weights' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-navbar color="primary">
+      <ion-buttons end>
+          <button ion-button (click)="showWeightAlert()">Adicionar Peso</button>
+      </ion-buttons>
+  </ion-navbar>
+  
+  <h4 class="center">Ultimas Pesagens</h4>
+  <div class="wrap-container-chart">
+    <div class="container-chart">
+        <ngx-charts-line-chart
+        [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']}"
+        [results]="dataChart"
+        [animations]="false"
+        [autoScale]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showGridLines]="showGridLines"
+        [gradient]="true">
+      </ngx-charts-line-chart>
+    </div>
+  </div>
+
+</ion-content>

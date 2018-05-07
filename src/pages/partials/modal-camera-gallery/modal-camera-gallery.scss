@@ -1,0 +1,27 @@
+modal-camera-gallery {
+    
+    ion-content, .scroll-content  {
+       padding: 0 !important;
+    }
+    ion-list {
+        margin: 0 !important;
+    }
+    ion-item {
+        padding-left: 0 !important;
+        .item-inner {
+            padding: 5px 20px;
+        }
+    }
+    .toolbar-background, ion-header {
+        background: #454545 !important;
+    }
+    .toolbar-title {
+        color: #fff !important;
+    }
+}
+.my-modal.modal-cam-gallery {
+    background-color: transparent;
+    .modal-wrapper {
+        height: auto !important;
+    }
+}

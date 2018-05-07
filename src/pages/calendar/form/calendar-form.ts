@@ -2,17 +2,19 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { DatePicker } from '@ionic-native/date-picker';
 import moment from 'moment';
-import { ScheduleService } from '../../providers/schedule-service';
-import { Global } from '../../helpers/global';
+import { ScheduleService } from '../../../providers/schedule-service';
+import { Global } from '../../../helpers/global';
+import { ProtectedPage } from '../../protected-page/protected-page';
+import { UserService } from '../../../providers/user-service';
 
 @IonicPage({
-  name: 'new-schedule'
+  name: 'calendar-form'
 })
 @Component({
-  selector: 'page-new-schedule',
-  templateUrl: 'new-schedule.html',
+  selector: 'page-calendar-form',
+  templateUrl: 'calendar-form.html',
 })
-export class NewSchedulePage {
+export class CalendarFormPage extends ProtectedPage {
 
   public date = moment().add(1, 'days').toDate();
   public time = new Date();
@@ -27,11 +29,10 @@ export class NewSchedulePage {
               public scheduleService: ScheduleService,
               public global: Global,
               public loadingCtrl: LoadingController,
+              public userService: UserService,
               public navParams: NavParams) {
-  }
 
-  ionViewDidLoad() {
-
+      super(navCtrl, userService);
   }
 
   save() {
@@ -48,15 +49,16 @@ export class NewSchedulePage {
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.scheduleService.create(schedule)
-        .then(res=> {
+    this.scheduleService.create(schedule).subscribe(
+      res=> {
           loader.dismiss();
           this.close('success');
-        })
-        .catch(err=> {
+      },
+      err=> {
           loader.dismiss();
           this.global.showMsg('Falha ao criar compromisso.', 'error');
-        });
+      }
+    );
   }
 
   close(status = 'cancel') {

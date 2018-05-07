@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { NewSchedulePage } from './new-schedule';
+import { PhotosPage } from './photos';
 import { SharedModule } from '../../helpers/shared.module';
 
 @NgModule({
   declarations: [
-    NewSchedulePage,
+    PhotosPage,
   ],
   imports: [
-    IonicPageModule.forChild(NewSchedulePage),
+    IonicPageModule.forChild(PhotosPage),
     SharedModule
   ],
   exports: [
-    NewSchedulePage
+    PhotosPage
   ]
 })
-export class NewSchedulePageModule {}
+export class PhotosPageModule {}

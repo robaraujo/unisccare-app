@@ -1,10 +1,18 @@
 <ion-split-pane>
 
 <ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Меню</ion-title>
-    </ion-toolbar>
+  <ion-header class="header-menu">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3>
+            <img src="/assets/half-logo.png">
+          </ion-col>
+          <ion-col>
+            <div class="menu-username">{{userService.getFullname()}}</div>
+            <div class="menu-goprofile" (click)="openProfilePage()">Ver perfil</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
   </ion-header>
 
   <ion-content>

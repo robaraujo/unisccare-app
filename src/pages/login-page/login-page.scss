@@ -1,5 +1,8 @@
 page-login-page {
-
+  .logo {
+    width: 200px;
+    margin-top: 40px;
+  }
   scroll-content {
     display: flex;
     flex-direction: column;
@@ -18,6 +21,8 @@ page-login-page {
     flex: 1;
   }
 
-
+  button {
+    
+  }
 
 }
