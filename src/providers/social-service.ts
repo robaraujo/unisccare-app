@@ -20,8 +20,20 @@ export class SocialService {
         return this.http.get(config.apiUrl + '/feed');
     }
 
+    listUserFeed(userId) {
+        return this.http.get(config.apiUrl + '/feed/'+userId);
+    }
+
     listFollow() {
         return this.http.get(config.apiUrl + '/follow');
+    }
+
+    followUser(userId) {
+        return this.http.get(config.apiUrl + '/follow/'+userId);
+    }
+
+    unfollowUser(userId) {
+        return this.http.delete(config.apiUrl + '/unfollow/'+userId);
     }
 
     addPost(idForum, text) {

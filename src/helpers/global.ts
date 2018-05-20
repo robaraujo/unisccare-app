@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController, App} from 'ionic-angular';
 import { UserService } from '../providers/user-service';
+import moment from 'moment';
 
 @Injectable()
 export class Global
@@ -23,8 +24,18 @@ export class Global
         return toast;
     }
 
-    openPage(page) {
+    openPage(page, params = {}, push = false) {
         let nav = this.app.getRootNav();
-        return nav.setRoot(page);
+        let method = push ? 'push' : 'setRoot';
+        return nav[method](page, params);
+    }
+
+    /**
+     * Transform datetime string to moment
+     * @param val 
+     * @param format 
+     */
+    public fromDatetime(val, format = 'YYYY-MM-DD HH:mm:ss') {
+        return moment(new Date(val));
     }
 };

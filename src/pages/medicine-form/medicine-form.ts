@@ -1,42 +1,43 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import moment from 'moment';
-import { FoodService } from '../../../providers/food-service';
-import { Global } from '../../../helpers/global';
-import { ProtectedPage } from '../../protected-page/protected-page';
-import { UserService } from '../../../providers/user-service';
+import { MedicineService } from '../../providers/medicine-service';
+import { Global } from '../../helpers/global';
+import { ProtectedPage } from '../protected-page/protected-page';
+import { UserService } from '../../providers/user-service';
 
 @IonicPage({
-  name: 'food-form'
+  name: 'medicine-form'
 })
 @Component({
-  selector: 'page-food-form',
-  templateUrl: 'food-form.html',
+  selector: 'page-medicine-form',
+  templateUrl: 'medicine-form.html',
 })
-export class FoodFormPage extends ProtectedPage {
+export class MedicineFormPage extends ProtectedPage{
 
-  public foods: any;
+  public medicines: any;
   public qtt: any;
-  public food_id: any;
+  public medicine_id: any;
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
-              public foodService: FoodService,
+              public viewCtrl: ViewController,
+              public medicineService: MedicineService,
               public global: Global,
               public loadingCtrl: LoadingController,
               public navParams: NavParams) {
     
     super(navCtrl, userService);
-    this.foods = this.navParams.get('foods') || [];
+    this.medicines = this.navParams.get('medicines') || [];
   }
 
   save() {
-    let userFood = {
-      food_id: this.food_id,
+    let userMedicine = {
+      medicine_id: this.medicine_id,
       qtt: this.qtt
     };
 
-    if (!userFood.food_id || !userFood.qtt) {
+    if (!userMedicine.medicine_id || !userMedicine.qtt) {
       return this.global.showMsg('Todos os campos são obrigatórios.', 'error');
     }
 
@@ -44,7 +45,7 @@ export class FoodFormPage extends ProtectedPage {
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.foodService.create(userFood).subscribe(
+    this.medicineService.create(userMedicine).subscribe(
       res=> {
           loader.dismiss();
           this.close('success');

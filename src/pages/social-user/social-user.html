@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.social' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-navbar color="primary">
+      <ion-buttons end>
+          <button ion-button *ngIf="!isFollowing" (click)="follow()">Seguir este usuário</button>
+          <button ion-button *ngIf="isFollowing" (click)="unfollow()">Deixar de Seguir</button>
+      </ion-buttons>
+  </ion-navbar>  
+
+  <div class="social-header" *ngIf="user">
+    <div class="center">
+        <img [src]="userService.getPicture()">
+        <h2>{{ userService.getFullname(user) }}</h2>
+        <p>{{userService.getAddress(user)}}</p>
+    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          Pontos
+        </ion-col>
+        <ion-col>
+          {{userService.info('points')}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Perdeu
+        </ion-col>
+        <ion-col>
+          {{userService.lostWeight(user)}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="userService.timeElapsed(user)">
+        <ion-col>
+          Operado há
+        </ion-col>
+        <ion-col>
+          {{userService.timeElapsed(user)}} dias
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="list">
+    <div ion-item class="item-post" *ngFor='let post of posts'>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3>
+              <img [src]="userService.getPicture(post.user)">
+          </ion-col>
+          <ion-col>
+              <div>
+                <b>{{post.forum.name}}</b>:
+                <div>{{post.text}}</div>
+              </div>
+              <p>por {{userService.getFullname(user)}}</p>
+              <div class="post-date" am-time-ago="post.created_at"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

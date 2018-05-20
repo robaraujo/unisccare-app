@@ -5,7 +5,7 @@
       <ion-grid>
         <ion-row>
           <ion-col col-3>
-            <img src="/assets/half-logo.png">
+            <img src="assets/half-logo.png">
           </ion-col>
           <ion-col>
             <div class="menu-username">{{userService.getFullname()}}</div>
@@ -17,8 +17,14 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button [ngClass]="p.component" ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon [name]="p.icon"></ion-icon>
         {{p.title | translate }}
+        <ion-list *ngIf="p.subpages" >
+          <button *ngFor="let p2 of p.subpages" (click)="openPage(p2)">
+            {{p.title | translate }}
+          </button>
+        </ion-list>
       </button>
     </ion-list>
   </ion-content>

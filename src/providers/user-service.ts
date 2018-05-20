@@ -95,10 +95,11 @@ export class UserService {
   /**
    * Time elapsed after surgery
    */
-  timeElapsed() {
-    if (!this.logged || !this.logged.dt_operation) return null;
+  timeElapsed(user?) {
+    user = user || this.logged
+    if (!user || !user.dt_operation) return null;
 
-    let start = moment(this.logged.dt_operation, 'YYYY-MM-DD');
+    let start = moment(user.dt_operation, 'YYYY-MM-DD');
     let end = moment();
     var duration = moment.duration(end.diff(start));
     let diff = Math.trunc(duration.asDays());

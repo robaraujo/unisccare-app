@@ -13,7 +13,7 @@ export class MyApp {
 
   rootPage: any = 'JourneyPage';
 
-  pages: Array<{title: string, component: any, method?: any}>;
+  pages: Array<{title: string, component: any, icon?: any, method?: any, subpages?: Array<any>}>;
 
   constructor(
     public platform: Platform,
@@ -28,12 +28,16 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      {title: 'page.journey', component: 'JourneyPage'},
-      {title: 'page.monitor', component: 'MonitorPage'},
-      {title: 'page.social', component: 'SocialPage'},
-      {title: 'page.calendar', component: 'CalendarPage'},
-      {title: 'page.surgery', component: 'SurgeryPage'},
-      {title: 'page.logout', component: 'LoginPage', method: 'logout'}
+      {title: 'page.journey', component: 'JourneyPage', icon: 'md-home'},
+      {title: 'page.monitor', component: 'MonitorPage', icon: 'md-pulse'},
+      {title: 'page.report', component: 'ReportPage', icon: 'md-pulse', subpages: [
+        {title: 'page.report-food', component: 'ReportFoodPage'},
+        {title: 'page.report-weight', component: 'ReportWeightPage'},
+      ]},
+      {title: 'page.social', component: 'SocialPage', icon: 'md-contacts'},
+      {title: 'page.calendar', component: 'CalendarPage', icon: 'md-calendar'},
+      {title: 'page.surgery', component: 'SurgeryPage', icon: 'ios-contact'},
+      {title: 'page.logout', component: 'LoginPage', method: 'logout', icon: 'md-log-out'}
     ];
 
   }
@@ -42,12 +46,14 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
+      this.statusBar.hide();
       this.splashScreen.hide();
     });
   }
 
   openPage(page) {
+    
+    if (page.subpages) return;
 
     if (page.method && page.method === 'logout') {
       this.userService.logout();

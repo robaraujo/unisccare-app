@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="padding">
+<ion-content>
   <div class="social-header">
     <div class="center">
         <img [src]="userService.getPicture()">
@@ -57,13 +57,13 @@
 
     <div *ngSwitchCase="'feed'">
       <div class="list">
-        <div ion-item class="item-post" *ngFor='let post of posts' (click)="openForum(post.forum.id)">
+        <div ion-item class="item-post" *ngFor='let post of posts'>
           <ion-grid>
             <ion-row>
-              <ion-col col-3>
+              <ion-col col-3 (click)="openUser(post.user.id)">
                   <img [src]="userService.getPicture(post.user)">
               </ion-col>
-              <ion-col>
+              <ion-col (click)="openForum(post.forum.id)">
                   <div>
                     <b>{{post.forum.name}}</b>:
                     <div>{{post.text}}</div>
@@ -84,13 +84,13 @@
         </button>
       </div>
       
-      <div ion-item class="item-forum" *ngFor='let forum of foruns' (click)="openForum(forum.id)">
+      <div ion-item class="item-forum" *ngFor='let forum of foruns'>
           <ion-grid>
             <ion-row>
-              <ion-col col-3>
+              <ion-col col-3 (click)="openUser(forum.user.id)">
                 <img [src]="userService.getPicture(forum.user)">
               </ion-col>
-              <ion-col>
+              <ion-col (click)="openForum(forum.id)">
                   <h2>{{forum.name}}</h2>
                   <p>por <b>{{userService.getFullname(forum.user)}}</b></p>
               </ion-col>
@@ -105,17 +105,16 @@
     </div>
 
     <div *ngSwitchCase="'follow'">
-      <div ion-item class="item-following" *ngFor='let row of following'>
+      <div ion-item class="item-following" *ngFor='let row of following; let i = index'>
           <ion-grid>
             <ion-row>
-              <ion-col col-3>
+              <ion-col col-3 (click)="openUser(row.user.id)">
                 <img [src]="userService.getPicture(row.user)">
               </ion-col>
               <ion-col>
                 <div>{{userService.getFullname(row.user)}}</div>
-                <button ion-button small color="danger" ng-click="unfollow($event, $index)">
-                  Deixar de seguir&nbsp;
-                  <ion-icon name="ios-close-circle-outline"></ion-icon>
+                <button ion-button small color="danger" (click)="unfollow($event, row.user.id, i)">
+                  Deixar de seguir
                 </button>
               </ion-col>
             </ion-row>

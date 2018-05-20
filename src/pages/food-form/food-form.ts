@@ -1,43 +1,43 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import moment from 'moment';
-import { MedicineService } from '../../../providers/medicine-service';
-import { Global } from '../../../helpers/global';
-import { ProtectedPage } from '../../protected-page/protected-page';
-import { UserService } from '../../../providers/user-service';
+import { FoodService } from '../../providers/food-service';
+import { Global } from '../../helpers/global';
+import { ProtectedPage } from '../protected-page/protected-page';
+import { UserService } from '../../providers/user-service';
 
 @IonicPage({
-  name: 'medicine-form'
+  name: 'food-form'
 })
 @Component({
-  selector: 'page-medicine-form',
-  templateUrl: 'medicine-form.html',
+  selector: 'page-food-form',
+  templateUrl: 'food-form.html',
 })
-export class MedicineFormPage extends ProtectedPage{
+export class FoodFormPage extends ProtectedPage {
 
-  public medicines: any;
+  public foods: any;
   public qtt: any;
-  public medicine_id: any;
+  public food_id: any;
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
-              public viewCtrl: ViewController,
-              public medicineService: MedicineService,
+              public foodService: FoodService,
               public global: Global,
+              public viewCtrl: ViewController,
               public loadingCtrl: LoadingController,
               public navParams: NavParams) {
     
     super(navCtrl, userService);
-    this.medicines = this.navParams.get('medicines') || [];
+    this.foods = this.navParams.get('foods') || [];
   }
 
   save() {
-    let userMedicine = {
-      medicine_id: this.medicine_id,
+    let userFood = {
+      food_id: this.food_id,
       qtt: this.qtt
     };
 
-    if (!userMedicine.medicine_id || !userMedicine.qtt) {
+    if (!userFood.food_id || !userFood.qtt) {
       return this.global.showMsg('Todos os campos são obrigatórios.', 'error');
     }
 
@@ -45,7 +45,7 @@ export class MedicineFormPage extends ProtectedPage{
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.medicineService.create(userMedicine).subscribe(
+    this.foodService.create(userFood).subscribe(
       res=> {
           loader.dismiss();
           this.close('success');

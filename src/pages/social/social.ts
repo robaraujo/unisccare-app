@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 import { UserService } from '../../providers/user-service';
 import { SocialService } from '../../providers/social-service';
 import { ProtectedPage } from '../protected-page/protected-page';
+import { Global } from '../../helpers/global';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ export class SocialPage extends ProtectedPage {
   constructor(public navCtrl: NavController,
               public userService: UserService,
               public navParams: NavParams,
+              public global: Global,
               private socialService: SocialService,
               private loadingController: LoadingController) {
 
@@ -85,8 +87,25 @@ export class SocialPage extends ProtectedPage {
 
   }
 
-  unfollow(e, index) {
-    
+  unfollow(e, userId, index) {
+    let loader = this.loadingController.create();
+    loader.present();
+
+    this.socialService.unfollowUser(userId).subscribe(
+      res=> {
+        loader.dismiss();
+        this.global.showMsg('Agora você não segue mais este usuário.', 'success');
+        this.following.splice(index, 1);
+      },
+      err=> {
+        loader.dismiss();
+        this.global.showMsg('Erro ao deixar de seguir usuário, tente mais tarde.', 'error');
+      }
+    );
+  }
+
+  openUser(userId) {
+    this.global.openPage('social-user', {userId: userId}, true);
   }
 
 }

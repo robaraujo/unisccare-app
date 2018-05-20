@@ -32,6 +32,9 @@
     "logout" : "Sair",
     "register" : "Novo Registro",
     "forgotten_password" : "Recuperação de senha",
-    "profile" : "Perfil"
+    "profile" : "Perfil",
+    "report-food" : "Relatório Alimentação",
+    "report-water" : "Relatório de Água",
+    "report-medicine" : "Relatório de Medicamentos"
   }
 }

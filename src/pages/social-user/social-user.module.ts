@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SocialUserPage } from './user';
-import { SharedModule } from '../../../helpers/shared.module';
+import { SocialUserPage } from './social-user';
+import { SharedModule } from '../../helpers/shared.module';
 
 @NgModule({
   declarations: [

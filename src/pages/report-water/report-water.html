@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.report-water' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-navbar color="primary">
+    <ion-grid class="header-form">
+      <ion-row>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label stacked>Visualização</ion-label>
+            <ion-select (ngModelChange)="changeView($event)" [(ngModel)]="form.view">
+              <ion-option value="year">Anual</ion-option>
+              <ion-option value="month">Mensal</ion-option>
+              <ion-option value="week">Semanal</ion-option>
+              <ion-option value="day">Diária</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label stacked>Data</ion-label>
+            <ion-datetime (ngModelChange)="changeDate($event)" #displayDateElem [displayFormat]="form.displayDate" [(ngModel)]="form.selectedDate"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+
+  <div class="none-found" *ngIf="!lineChartData.length">
+    Não encontramos registros para o periodo selecionado.
+  </div>
+  <div style="display: block;" *ngIf="lineChartData.length">
+    <canvas baseChart width="300" height="380"
+        [datasets]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"></canvas>
+  </div>
+</ion-content>

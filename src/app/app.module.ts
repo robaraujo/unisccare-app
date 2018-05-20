@@ -27,10 +27,14 @@ import { SocialService } from '../providers/social-service';
 import { WeightService } from '../providers/weight-service';
 import { MedicineService } from '../providers/medicine-service';
 import { ScheduleService } from '../providers/schedule-service';
+import { ReportService } from '../providers/report-service';
 
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+export function gettoken (){
+  return localStorage.getItem('access_token');
+};
 
 @NgModule({
   declarations: [
@@ -50,9 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     JwtModule.forRoot({
       config: {
-          tokenGetter: function() {
-              return localStorage.getItem('access_token');
-          },
+          tokenGetter: gettoken,
           whitelistedDomains: [config.server],
           //blacklistedRoutes: ['localhost:3001/auth/']
       }
@@ -81,6 +83,7 @@ export function createTranslateLoader(http: HttpClient) {
     WaterService,
     MedicineService,
     FoodService,
+    ReportService,
     Global
   ]
 })

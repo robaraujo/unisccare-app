@@ -36,6 +36,38 @@
         font-size: 15pt;
      }
  }
+
+ion-menu {
+    ion-header {
+        background-color: rgba(137,110,233,0.2) !important; 
+    }
+    ion-icon {
+        margin-right: 10px;
+        font-size: 2.4rem;
+        vertical-align: text-bottom;
+    }
+
+    button {
+        
+        &.LoginPage {
+            border-top: 1px solid rgba(10,10,10,0.1) !important;
+        }
+
+        background: transparent !important;
+        .item-inner {
+            border-bottom: 0px !important;
+        }
+        ion-label {
+            color: #fff !important;
+        }
+    }
+    ion-content {
+        background-image: url(../assets/bg-menu.png);
+        background-size:     cover;
+        background-repeat:   no-repeat;
+        background-position: center center;
+    }
+}
 ion-toast {
 
     z-index: 70000 !important;
@@ -155,11 +187,31 @@ ion-modal.my-modal {
 
 
 ion-header {
-    background-color: #896ee9 !important;
+    background-color: #724bd0 !important;
     .toolbar-title, ion-icon {
         color: #fff;
     }
 }
 .toolbar-background {
     background-color: transparent;
+}
+
+.header-form {
+    padding-bottom: 0;
+    .item-datetime, .item-select {
+        border-radius: 3px;
+    }
+    ion-datetime {
+        padding: 8px 0px 8px 0px !important;
+    }
+    .btn-input {
+        height: 3.9rem !important;
+    }
+}
+
+.none-found {
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 1.7rem;
+    color: #929191;
 }
