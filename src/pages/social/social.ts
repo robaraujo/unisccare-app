@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { UserService } from '../../providers/user-service';
 import { SocialService } from '../../providers/social-service';
 import { ProtectedPage } from '../protected-page/protected-page';
@@ -15,13 +15,15 @@ export class SocialPage extends ProtectedPage {
   public segment = 'feed';
   public foruns;
   public posts;
-  public following;
+  public users;
   public user;
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
               public navParams: NavParams,
               public global: Global,
+              private loadingCtrl: LoadingController,
+              private alertCtrl: AlertController,
               private socialService: SocialService,
               private loadingController: LoadingController) {
 
@@ -50,12 +52,12 @@ export class SocialPage extends ProtectedPage {
         }
       );
         
-    } else if (this.segment === 'follow') {
+    } else if (this.segment === 'users') {
       
       this.socialService.listFollow().subscribe(
         (res:any)=> {
           loader.dismiss();
-          this.following = res;
+          this.users = res;
         },
         err=> {
           loader.dismiss();
@@ -79,31 +81,72 @@ export class SocialPage extends ProtectedPage {
 
   }
 
+  /**
+   * Open forum by id
+   * @param id 
+   */
   openForum(id) {
     this.navCtrl.push('ForumPage', {id: id});
   }
 
-  addForum() {
+  /**
+   * Add forum in server
+   */
+  addForum(name) {
+    if (!name) return;
 
-  }
-
-  unfollow(e, userId, index) {
-    let loader = this.loadingController.create();
+    let loader = this.loadingCtrl.create();
     loader.present();
-
-    this.socialService.unfollowUser(userId).subscribe(
-      res=> {
+    
+    this.socialService.createForum(name).subscribe(
+      (res:any)=> {
         loader.dismiss();
-        this.global.showMsg('Agora você não segue mais este usuário.', 'success');
-        this.following.splice(index, 1);
+        this.global.showMsg('Forum criado.', 'success');
+        this.openForum(res.id);
       },
       err=> {
         loader.dismiss();
-        this.global.showMsg('Erro ao deixar de seguir usuário, tente mais tarde.', 'error');
+        this.global.showMsg('Não foi possível adicionar, tente mais tarde.', 'error');
       }
-    );
+    )
   }
 
+  /**
+   * Open alert form to add forum
+   */
+  formForum() {
+      let alert = this.alertCtrl.create({
+        title: 'Novo Forum',
+        message: 'Infome o assunto:',
+        inputs: [
+          {
+            name: 'forum',
+            placeholder: 'Ex.: Dicas de dieta.',
+            type: 'text'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              
+            }
+          },{
+            text: 'Cadastrar',
+            handler: (data) => {
+              this.addForum(data.forum)
+            }
+          }
+        ]
+      });
+      alert.present();
+  }
+
+  /**
+   * Open user social page
+   * @param userId 
+   */
   openUser(userId) {
     this.global.openPage('social-user', {userId: userId}, true);
   }

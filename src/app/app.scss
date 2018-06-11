@@ -47,7 +47,14 @@ ion-menu {
         vertical-align: text-bottom;
     }
 
-    button {
+    .submenu {
+        margin: 10px 0 0 20px !important;
+        ion-icon {
+            vertical-align: sub !important;
+        }
+    }
+
+    .item {
         
         &.LoginPage {
             border-top: 1px solid rgba(10,10,10,0.1) !important;
@@ -62,10 +69,11 @@ ion-menu {
         }
     }
     ion-content {
-        background-image: url(../assets/bg-menu.png);
-        background-size:     cover;
-        background-repeat:   no-repeat;
-        background-position: center center;
+        background: #774cce;
+        background: -moz-linear-gradient(-45deg, #774cce 0%, #d768a1 100%);
+        background: -webkit-linear-gradient(-45deg, #774cce 0%,#d768a1 100%); 
+        background: linear-gradient(135deg, #774cce 0%,#d768a1 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#774cce', endColorstr='#d768a1',GradientType=1 );
     }
 }
 ion-toast {
@@ -214,4 +222,7 @@ ion-header {
     text-align: center;
     font-size: 1.7rem;
     color: #929191;
+}
+.hidden {
+    display: none;
 }

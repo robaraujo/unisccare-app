@@ -1,0 +1,23 @@
+report-step-page {
+    .step-count-disabled {
+        text-align: center;
+        font-size: 1.6rem;
+        color: #aaa;
+        padding: 10px;
+    }
+
+    .item-report-type {
+        .ion-label {
+            -webkit-flex: 0 0 20%;
+            -ms-flex: 0 0 20%;
+            flex: 0 0 20% !important;
+            width: 20% !important;
+            min-width: 20% !important;
+            max-width: 20% !important;
+        }
+        ion-select {
+            max-width: 80% !important;
+            width: 80%;
+        }
+    }
+}

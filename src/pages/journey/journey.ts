@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserService } from '../../providers/user-service';
 import { ProtectedPage } from '../protected-page/protected-page';
+import { Global } from '../../helpers/global';
+import { StepService } from '../../providers/step-service';
+import { MessageService } from '../../providers/message-service';
 
 /**
  * Generated class for the JourneyPage page.
@@ -16,19 +19,27 @@ import { ProtectedPage } from '../protected-page/protected-page';
 })
 export class JourneyPage extends ProtectedPage {
   
+  public stepsDay: number;
+
   constructor(private nav: NavController,
               public navCtrl: NavController,
               public userService: UserService,
+              public stepService: StepService,
               private alertCtrl: AlertController,
+              private global: Global,
+              public msgService: MessageService,
               public navParams: NavParams) {
 
     super(navCtrl, userService);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JourneyPage');
-
+    if (this.userService.logged) {
+      this.msgService.startPolling();
+    }
+    
     this.checkIncompleteUser();
+    this.stepsDay = this.stepService.getDaySteps();
   }
 
   checkIncompleteUser() {

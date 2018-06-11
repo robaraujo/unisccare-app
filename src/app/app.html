@@ -1,6 +1,6 @@
 <ion-split-pane>
 
-<ion-menu [content]="content">
+<ion-menu [content]="content" type="overlay">
   <ion-header class="header-menu">
       <ion-grid>
         <ion-row>
@@ -16,16 +16,21 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button [ngClass]="p.component" ion-item *ngFor="let p of pages" (click)="openPage(p)">
+    <ion-list class="main-menu">
+      <div [ngClass]="p.component" ion-item *ngFor="let p of pages; let i = index" (click)="openPage(p, $event, i)">
+        
         <ion-icon [name]="p.icon"></ion-icon>
         {{p.title | translate }}
-        <ion-list *ngIf="p.subpages" >
-          <button *ngFor="let p2 of p.subpages" (click)="openPage(p2)">
-            {{p.title | translate }}
-          </button>
+
+        <!--submenu-->
+        <ion-list *ngIf="p.subpages" class="submenu" [ngClass]="{hidden: openedSubmenu !== i}">
+          <div ion-item *ngFor="let p2 of p.subpages" (click)="openPage(p2)">
+            <ion-icon name="md-arrow-dropright"></ion-icon>
+            {{p2.title | translate }}
+          </div>
         </ion-list>
-      </button>
+
+      </div>
     </ion-list>
   </ion-content>
 

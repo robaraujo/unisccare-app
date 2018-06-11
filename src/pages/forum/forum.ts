@@ -19,6 +19,8 @@ export class ForumPage {
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
               public global: Global,
+              public navCtrl: NavController,
+              public userService: UserService,
               private socialService: SocialService) {
   }
 
@@ -80,5 +82,30 @@ export class ForumPage {
     });
 
     alert.present();
+  }
+  delete() {
+    let con = confirm('Tem certeza que deseja apagar este forum?');
+    if (!con) return;
+
+    let loader = this.loadingCtrl.create();
+    loader.present();
+
+    this.socialService.deleteForum(this.forum.id).subscribe(
+      res=> {
+        this.global.openPage('SocialPage').then(
+          res=> {
+            this.global.showMsg('Forum excluído com sucesso', 'success');
+          }
+        )
+        loader.dismiss();
+      },
+      err=> {
+        this.global.showMsg('Falha ao remover forum', 'error');
+        loader.dismiss();
+      }
+    )
+  }
+  isYou(id) {
+    return id == this.userService.info('id')
   }
 }

@@ -2,5 +2,15 @@ page-photos {
     .image-container {
         min-height: 200px;
         background-size: cover;
+
+        div {
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            text-align: center;
+            width: 90%;
+            margin-left: 5%;
+            border-radius: 4px;
+            padding: 5px;
+        }
     }
 }

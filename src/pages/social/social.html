@@ -48,8 +48,8 @@
     <ion-segment-button value="forum">
       Foruns
     </ion-segment-button>
-    <ion-segment-button value="follow">
-      Seguindo
+    <ion-segment-button value="users">
+      Usuários
     </ion-segment-button>
   </ion-segment>
 
@@ -60,15 +60,18 @@
         <div ion-item class="item-post" *ngFor='let post of posts'>
           <ion-grid>
             <ion-row>
-              <ion-col col-3 (click)="openUser(post.user.id)">
+              <ion-col class="social-line-img" col-3 (click)="openUser(post.user.id)">
                   <img [src]="userService.getPicture(post.user)">
               </ion-col>
-              <ion-col (click)="openForum(post.forum.id)">
+              <ion-col class="social-line-content" (click)="openForum(post.forum.id)">
                   <div>
                     <b>{{post.forum.name}}</b>:
                     <div>{{post.text}}</div>
                   </div>
-                  <p>por {{userService.getFullname(post.forum.user)}}</p>
+                  <p>por 
+                    <b *ngIf="post.user.id == userService.info('id')">você</b>
+                    <b *ngIf="post.user.id != userService.info('id')">{{userService.getFullname(post.user)}}</b>
+                  </p>
                   <div class="post-date" am-time-ago="post.created_at"></div>
               </ion-col>
             </ion-row>
@@ -78,44 +81,47 @@
     </div>
 
     <div *ngSwitchCase="'forum'">
-      <div class="center">
-        <button ion-button (click)="addForum()">
-          Criar Forum
+        <button class="btn-create-forum" ion-button round (click)="formForum()">
+          <ion-icon name="md-add"></ion-icon>
+          <div>Forum</div>
         </button>
-      </div>
-      
-      <div ion-item class="item-forum" *ngFor='let forum of foruns'>
-          <ion-grid>
-            <ion-row>
-              <ion-col col-3 (click)="openUser(forum.user.id)">
-                <img [src]="userService.getPicture(forum.user)">
-              </ion-col>
-              <ion-col (click)="openForum(forum.id)">
-                  <h2>{{forum.name}}</h2>
-                  <p>por <b>{{userService.getFullname(forum.user)}}</b></p>
-              </ion-col>
-              <ion-col col-2>
-                  <button *ngIf="forum.user.id == userService.info('id')" (click)="removeForum($event, $index)" icon-only ion-button color="danger">
-                      <ion-icon name="md-trash"></ion-icon>
-                  </button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-      </div>  
+      <div class="list">
+        <div ion-item class="item-forum" *ngFor='let forum of foruns'>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="social-line-img" col-3 (click)="openUser(forum.user.id)">
+                  <img [src]="userService.getPicture(forum.user)">
+                </ion-col>
+                <ion-col class="social-line-content" (click)="openForum(forum.id)">
+                    <h2>{{forum.name}}</h2>
+                    <p>por 
+                      <b *ngIf="forum.user.id == userService.info('id')">você</b>
+                      <b *ngIf="forum.user.id != userService.info('id')">{{userService.getFullname(forum.user)}}</b>
+                    </p>
+                </ion-col>
+                <!--<ion-col col-2>
+                    <button *ngIf="forum.user.id == userService.info('id')" (click)="removeForum($event, $index)" icon-only ion-button color="danger">
+                        <ion-icon name="md-trash"></ion-icon>
+                    </button>
+                </ion-col>-->
+              </ion-row>
+            </ion-grid>
+          </div> 
+        </div>
     </div>
 
-    <div *ngSwitchCase="'follow'">
-      <div ion-item class="item-following" *ngFor='let row of following; let i = index'>
+    <div *ngSwitchCase="'users'">
+      <div ion-item class="item-users" *ngFor='let user of users; let i = index'>
           <ion-grid>
-            <ion-row>
-              <ion-col col-3 (click)="openUser(row.user.id)">
-                <img [src]="userService.getPicture(row.user)">
+            <ion-row (click)="openUser(user.id)">
+              <ion-col col-3 class="social-line-img">
+                <img [src]="userService.getPicture(user)">
               </ion-col>
-              <ion-col>
-                <div>{{userService.getFullname(row.user)}}</div>
-                <button ion-button small color="danger" (click)="unfollow($event, row.user.id, i)">
-                  Deixar de seguir
-                </button>
+              <ion-col class="social-line-content">
+                <div>{{userService.getFullname(user)}}</div>
+                <small *ngIf="userService.timeElapsed(user)">
+                    Operado há {{userService.timeElapsed(user)}} dias
+                </small>
               </ion-col>
             </ion-row>
           </ion-grid>

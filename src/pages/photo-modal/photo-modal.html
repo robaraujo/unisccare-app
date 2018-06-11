@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons left>
+        <button ion-button (click)="close()">
+            <ion-icon name="md-arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+    <ion-title class="center">{{moment(photo.created_at).format('DD/MM/YYYY HH:mm')}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <img [src]="getPhotoUrl(photo)"/>
+</ion-content>

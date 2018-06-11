@@ -74,15 +74,15 @@
             </ion-row>
             <ion-row>
               <ion-col>
-                <ion-item (click)="openDatePicker('dateOperation');">
+                <ion-item>
                   <ion-label floating>Data Operação:</ion-label>
-                  <ion-input disabled [value]="getFormatedDate(dateOperation)"></ion-input>
+                  <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_operation"></ion-datetime>
                 </ion-item>
               </ion-col>
               <ion-col>
-                <ion-item (click)="openDatePicker('dateEnd');">
+                <ion-item>
                   <ion-label floating>Final do tratamento:</ion-label>
-                  <ion-input disabled [value]="getFormatedDate(dateEnd)"></ion-input>
+                  <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_end"></ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-row>

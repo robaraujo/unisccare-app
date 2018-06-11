@@ -15,6 +15,7 @@ export class FoodPage extends ProtectedPage {
   userFoods: any;
   public foods: any;
   public moment = moment;
+  public meals: any;
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
@@ -42,7 +43,7 @@ export class FoodPage extends ProtectedPage {
         loader.dismiss();
         this.userFoods = res.user_foods;
         this.foods = res.foods;
-        console.log(res);
+        this.meals = res.diets;
       },
       err=> {
         loader.dismiss();
@@ -50,8 +51,14 @@ export class FoodPage extends ProtectedPage {
     )
   }
 
+  /**
+   * @param type strin - food or diet
+   */
   addFood() {
-    let modal = this.modalCtrl.create('food-form', {foods: this.foods});
+    let modal = this.modalCtrl.create('food-form', {
+      foods: this.foods, meals: this.meals
+    });
+
     modal.present();
     modal.onDidDismiss(msg=> {
         console.log(msg)

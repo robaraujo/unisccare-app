@@ -19,6 +19,16 @@ export class ReportService {
     }
 
 
+    step(view, date) {
+        let params = `?view=${view}&date=${date}`;
+        return this.http.get(config.apiUrl + '/report/step'+params);
+    }
+
+    weight(view, date) {
+        let params = `?view=${view}&date=${date}`;
+        return this.http.get(config.apiUrl + '/report/weight'+params);
+    }
+
     medicine(view, date) {
         let params = `?view=${view}&date=${date}`;
         return this.http.get(config.apiUrl + '/report/medicine'+params);

@@ -16,8 +16,11 @@ import { UserService } from '../../providers/user-service';
 export class FoodFormPage extends ProtectedPage {
 
   public foods: any;
+  public meals: any;
   public qtt: any;
+  public mealId;
   public food_id: any;
+  public type = 'meal'; //meal or food
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
@@ -29,15 +32,22 @@ export class FoodFormPage extends ProtectedPage {
     
     super(navCtrl, userService);
     this.foods = this.navParams.get('foods') || [];
+    this.meals = this.navParams.get('meals') || [];
   }
 
   save() {
-    let userFood = {
+    let form = {
+      type: this.type,
+      diet: this.mealId,
       food_id: this.food_id,
-      qtt: this.qtt
+      qtt: this.qtt,
+
     };
 
-    if (!userFood.food_id || !userFood.qtt) {
+    if (this.type === 'meal' && !form.diet) {
+      return this.global.showMsg('Selecione a refeição.', 'error');
+    }
+    if (this.type === 'food' && (!form.food_id || !form.qtt)) {
       return this.global.showMsg('Todos os campos são obrigatórios.', 'error');
     }
 
@@ -45,7 +55,7 @@ export class FoodFormPage extends ProtectedPage {
     let loader = this.loadingCtrl.create();
     loader.present();
 
-    this.foodService.create(userFood).subscribe(
+    this.foodService.create(form).subscribe(
       res=> {
           loader.dismiss();
           this.close('success');

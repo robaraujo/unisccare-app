@@ -12,13 +12,9 @@ import { ProtectedPage } from '../protected-page/protected-page';
   templateUrl: 'weights.html',
 })
 export class WeightsPage extends ProtectedPage {
-  item: any;
-  showGridLines = true;
-
-  public dataChart = [{
-    name: "Pesos",
-    series: []
-  }];
+  
+  public weights: any;
+  public moment = moment;
 
   constructor(public navCtrl: NavController,
               public userService: UserService,
@@ -44,26 +40,8 @@ export class WeightsPage extends ProtectedPage {
 
     this.weightService.list().subscribe(
       (weights:any)=> {
-        
+        this.weights = weights;
         loader.dismiss();
-        let series = [];
-
-        weights.map(weight=> {
-          let date = moment(weight.created_at).format('DD/MM HH:mm');
-          series.push({
-            value: weight.weight,
-            max: weight.weight + 1,
-            min: weight.weight - 1,
-            name: date,
-          });
-        });
-
-        this.dataChart = [{
-          name: "Pesos",
-          series: series.reverse()
-        }];
-
-        console.log(this.dataChart)
       },
       err=> {
         loader.dismiss();

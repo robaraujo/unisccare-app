@@ -21,11 +21,12 @@
     "photos" : "Suas Fotos",
     "weights" : "Suas Pesagens",
     "water" : "Consumo de Água",
-    "food" : "Consumo de Alimentos",
+    "food" : "Refeições",
     "medicine" : "Medicamentos",
     "monitor" : "Monitoramento",
     "social" : "Social",
     "forum" : "Forum",
+    "messages" : "Mensagens",
     "calendar" : "Calendário",
     "surgery" : "Cirurgiões",
     "login" : "Login",
@@ -33,8 +34,12 @@
     "register" : "Novo Registro",
     "forgotten_password" : "Recuperação de senha",
     "profile" : "Perfil",
+    "notification" : "Notificações",
+    "report" : "Relatórios",
     "report-food" : "Relatório Alimentação",
     "report-water" : "Relatório de Água",
+    "report-step" : "Relatório de Passos",
+    "report-weight" : "Relatório de Pesagens",
     "report-medicine" : "Relatório de Medicamentos"
   }
 }

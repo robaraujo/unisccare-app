@@ -63,12 +63,12 @@ export class ReportMedicinePage extends ProtectedPage {
     let loader = this.loadingCtrl.create();
     loader.present();
     
-    let date = this.global.fromDatetime(this.form.selectedDate).format('YYYY-MM-DD');
-    this.reportService.medicine(this.form.view, date).subscribe(
+    let mDate = this.global.fromDatetime(this.form.selectedDate);
+    this.reportService.medicine(this.form.view, mDate.format('YYYY-MM-DD')).subscribe(
       (medicines:any)=> {
         loader.dismiss();
         this.medicines = medicines;
-        this.categorize();
+        this.categorize(mDate);
       },
       err=> {
         loader.dismiss();
@@ -76,11 +76,11 @@ export class ReportMedicinePage extends ProtectedPage {
     )
   }
 
-  categorize() {
+  categorize(mDate) {
     
     let grouped = {};
     this.lineChartData = [];
-    let labels = this.getTimeLabels();
+    let labels = this.global.getTimeLabels(mDate, this.form.view);
 
     this.medicines.map(medicine=> {
       this.preCategorize(grouped, medicine);
@@ -97,7 +97,6 @@ export class ReportMedicinePage extends ProtectedPage {
 
       this.lineChartData.push({data: data, label: groupAttr});
     });
-    console.log(grouped)
 
     // hack for update labels
     setTimeout(() => this.lineChartLabels = labels);
@@ -123,31 +122,7 @@ export class ReportMedicinePage extends ProtectedPage {
     grouped[groupAttr][time] = medicine.total;
 
   }
-
-  /**
-   * Get possible time labels based on view(day, month, year..) selected
-   */
-  private getTimeLabels() {
-    let date = this.global.fromDatetime(this.form.selectedDate);
-    let labels = [];
-
-    if (this.form.view === 'day') {
-      for (let i=1; i<= 23; i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'week') {
-      labels =  moment.weekdaysShort();
-    } else if (this.form.view === 'month') {
-      for (let i=1; i<= date.daysInMonth(); i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'year') {
-      labels = moment.monthsShort();
-    }
-
-    return labels;
-  }
-
+  
   /**
    * Return x label name. Ex.: 05, 16, Abr
    * @param medicine 

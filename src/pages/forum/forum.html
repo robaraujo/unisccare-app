@@ -10,17 +10,27 @@
 </ion-header>
 
 <ion-content class="padding">
+    <ion-navbar color="primary">
+      <ion-buttons start *ngIf="isYou(forum.user.id)">
+          <button ion-button (click)="delete()">
+              Apagar Forum
+          </button>
+      </ion-buttons>
+      <ion-buttons end>
+          <button ion-button (click)="addResposta()">Adicionar resposta</button>
+      </ion-buttons>
+    </ion-navbar>
+
     <div class="title1">
       {{forum.name}}<br>
       <small>
-        criado por {{userService.getFullname(forum.user)}}
+        criado por 
+        <b *ngIf="isYou(forum.user.id)">você</b>
+        <b *ngIf="!isYou(forum.user.id)">{{userService.getFullname(forum.user)}}</b>
         <span am-time-ago="forum.created_at"></span>
       </small>
     </div>
 
-    <button ion-button full (click)="addResposta()">
-      Adicionar resposta
-    </button>
     <div class="list">
         <div ion-item class="item-avatar" *ngFor='let post of posts'>
           <ion-grid>
@@ -30,7 +40,10 @@
               </ion-col>
               <ion-col>
                   <h2>{{post.text}}</h2>
-                  <p>por {{userService.getFullname(post.user)}}</p>
+                  <p>por 
+                    <b *ngIf="isYou(post.user.id)">você</b>
+                    <b *ngIf="!isYou(post.user.id)">{{userService.getFullname(post.user)}}</b>
+                  </p>
                   <div class="post-date" am-time-ago="post.created_at"></div>
               </ion-col>
             </ion-row>

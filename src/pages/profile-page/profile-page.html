@@ -12,22 +12,96 @@
 
 
 <ion-content>
-  <ion-card>
-    
-    <ion-row>
-      <ion-col col-25>{{ 'label.name' | translate }}:</ion-col>
-      <ion-col col-75>{{ userService.info('first_name') }}</ion-col>
-    </ion-row>
-    
-    <ion-row>
-      <ion-col col-25>{{ 'label.email' | translate }}:</ion-col>
-      <ion-col col-75>{{ userService.info('email') }}</ion-col>
-    </ion-row>
-       
-  </ion-card>
+  <ion-segment [(ngModel)]="submenu" mode="md">
+      <ion-segment-button value="profile">
+          Seus Dados
+      </ion-segment-button>
+      <ion-segment-button value="config">
+          Configurações
+      </ion-segment-button>
+  </ion-segment>
+  <div padding>
+    <ion-grid *ngIf="submenu === 'profile'">
+      <ion-row justify-content-around>
+        <ion-col col-sm-6 col-md-6 col-lg-4 col-xl-3  align-self-center>
+          <form [formGroup]="regData" (ngSubmit)="update()">
+            
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating>Nome:</ion-label>
+                    <ion-input type="text" formControlName="first_name"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                    <ion-item>
+                      <ion-label floating>Sobrenome:</ion-label>
+                      <ion-input type="text" formControlName="last_name"></ion-input>
+                    </ion-item>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col col-9>
+                  <ion-item>
+                    <ion-label floating>{{ 'label.email' | translate }}:</ion-label>
+                    <ion-input type="email" formControlName="email"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating>Idade:</ion-label>
+                    <ion-input type="number" formControlName="age"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
 
-
+            <h5 class="center">Campos Opcionais:</h5>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating>Data Operação:</ion-label>
+                    <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_operation"></ion-datetime>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating>Final do tratamento:</ion-label>
+                    <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_end"></ion-datetime>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label stacked>Seu Cirurgião</ion-label>
+                    <ion-select formControlName="staff_id">
+                      <ion-option *ngFor="let staff of staffs" [value]="staff.id">
+                        #{{staff.id}} {{staff.name}}
+                      </ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-list *ngIf="submenu === 'config'">
+      <ion-item>
+        <ion-label>
+          Contador de Pasos
+          <small>Conte seus passos e gere relatórios.</small>
+        </ion-label>
+        <ion-toggle (ngModelChange)="stepService.toggle($event)" [(ngModel)]="stepService.enabled"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
-
-
+<ion-footer>
+    <button *ngIf="submenu === 'profile'" block ion-button type="submit" (click)="update()" [disabled]="!regData.valid">Atualizar</button>
+</ion-footer>
 

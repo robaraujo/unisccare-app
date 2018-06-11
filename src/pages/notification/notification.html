@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>    
+    <ion-title>{{ 'page.notification' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="page-desc">
+    Selecione na lista abaixo os items que deseja ser lembrado durante o dia:
+  </div>
+  <ion-list class="local-notifications">
+    <ion-item *ngFor="let not of localNotifications">
+      <ion-label>
+        {{not.text}}
+        <small>{{not.triggerText}}</small>
+      </ion-label>
+      <ion-toggle (ngModelChange)="changeLocal($event, not)" [(ngModel)]="not.active"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

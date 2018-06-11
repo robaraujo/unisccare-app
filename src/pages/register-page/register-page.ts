@@ -4,7 +4,6 @@ import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {UserService} from '../../providers/user-service';
 import { Global } from '../../helpers/global';
 import moment from 'moment';
-import { DatePicker } from '@ionic-native/date-picker';
 import { StaffService } from '../../providers/staff-service';
 
 @IonicPage()
@@ -16,9 +15,7 @@ export class RegisterPage {
 
   staffs: any;
   private regData: FormGroup;
-
-  public dateOperation;
-  public dateEnd;
+  maxDate = moment().add(5, 'year').format('YYYY');
   
   constructor(
     public navCtrl: NavController,
@@ -27,7 +24,6 @@ export class RegisterPage {
     public menuCtrl: MenuController,
     public global: Global,
     private loadingCtrl: LoadingController,
-    public datePicker: DatePicker,
     public formBuilder: FormBuilder,
     public userService: UserService) {
 
@@ -39,6 +35,8 @@ export class RegisterPage {
       confirm_password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
 
       first_weight: [''],
+      dt_operation: [''],
+      dt_end: [''],
       age: [''],
       staff_id: [''],
     });
@@ -71,11 +69,11 @@ export class RegisterPage {
 
     let form = this.regData.value;
     
-    if (this.dateOperation) {
-      form.dt_operation = moment(this.dateOperation).format('YYYY-MM-DD');
+    if (form.dt_operation) {
+      form.dt_operation = this.global.fromDatetime(form.dt_operation).format('YYYY-MM-DD');
     }
-    if (this.dateEnd) {
-      form.dt_end = moment(this.dateEnd).format('YYYY-MM-DD');
+    if (form.dt_end) {
+      form.dt_end = this.global.fromDatetime(form.dt_end).format('YYYY-MM-DD');
     }
     
     this.userService.register(form).subscribe(
@@ -90,30 +88,5 @@ export class RegisterPage {
       },
       err=> this.global.showMsg('Erro ao efetuar registro, tente mais tarde.', 'error')
     );
-  }
-
-  /**
-   * 
-   * @param attrDate (dateOperation or dateEnd) 
-   */
-  openDatePicker(attrDate) {
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'date',
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => this[attrDate] = date,
-      err => console.log('Error occurred while getting date: ', err)
-    );
-  }
-
-  /**
-   * Return formated date to show in form as pt-bR
-   * @param date 
-   */
-  getFormatedDate(date) {
-    if (!date) return null;
-
-    return moment(date).format('DD/MM/YYYY');
   }
 }

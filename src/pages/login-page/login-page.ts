@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, MenuController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, MenuController, LoadingController} from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {UserService} from '../../providers/user-service';
 import { Global } from '../../helpers/global';
@@ -18,6 +18,7 @@ export class LoginPage {
     public navParams: NavParams,
     public menuCtrl: MenuController,
     public global: Global,
+    private loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
     public userService: UserService) {
 
@@ -37,9 +38,18 @@ export class LoginPage {
   }
 
   login() {
+    let loader = this.loadingCtrl.create();
+    loader.present();
+
     this.userService.login(this.loginData.value).subscribe(
-      res=> this.redirectToHome(),
-      err=> this.global.showMsg('Usuário ou senha inválido.', 'error')
+      res=> {
+        loader.dismiss();
+        this.redirectToHome();
+      },
+      err=> {
+        loader.dismiss();
+        this.global.showMsg('Usuário ou senha inválido.', 'error');
+      }
     );
   }
 

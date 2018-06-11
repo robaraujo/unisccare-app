@@ -18,10 +18,25 @@ export class UserService {
     this.idToken = localStorage.getItem("access_token");
   }
 
+  /**
+   * Register user on server
+   * @param userData 
+   */
   register(userData) {
 
     return this.http.post(config.apiUrl + config.user.register, userData).do(
         data => this.saveData(data),
+        err=> console.log("reg error", err)
+    );
+  }
+
+  /**
+   * Update user on server
+   * @param userData 
+   */
+  update(userData) {
+    return this.http.post(config.apiUrl + '/user/update', userData).do(
+        data => this.saveDataUser(data),
         err=> console.log("reg error", err)
     );
   }
@@ -65,6 +80,7 @@ export class UserService {
   }
 
   public staffInfo(field) {
+    console.log(this.logged)
     return this.logged && this.logged.staff && this.logged.staff[field] !== null ? this.logged.staff[field] : null;
   }
   getFullname(user = null) {
@@ -77,12 +93,12 @@ export class UserService {
     return user && user.city ? `${user.city} - ${user.state}` : null;
   }
 
-  getPicture(user = null) {
+  getPicture(user = null, folder = 'users') {
     user = user || this.logged;
     if (!user) return null;
 
     let pic = user.picture ? user.picture : 'empty.png';
-    return `http://${config.server}/img/users/${pic}`;
+    return `http://${config.server}/img/${folder}/${pic}`;
   }
 
   lostWeight() {

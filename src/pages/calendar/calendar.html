@@ -32,7 +32,7 @@
                         <div class="schedule-title">{{schedule.formatedTime}} - {{schedule.title}}</div>
                     </ion-col>
                     <ion-col col-2>
-                        <button ion-button color="danger" (click)="removeSchedule(schedule)">
+                        <button *ngIf="!schedule.staff_id" ion-button color="danger" (click)="removeSchedule(schedule)">
                             <ion-icon name="md-trash"></ion-icon>
                         </button>
                     </ion-col>

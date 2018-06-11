@@ -4,6 +4,7 @@ import { PhotoService } from '../../providers/photo-service';
 import { config } from '../../app/config';
 import { ProtectedPage } from '../protected-page/protected-page';
 import { UserService } from '../../providers/user-service';
+import moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -13,6 +14,8 @@ import { UserService } from '../../providers/user-service';
 export class PhotosPage extends ProtectedPage {
 
   photos: any;
+  moment = moment;
+  
   constructor(public navCtrl: NavController,
               public userService: UserService,
               public photoService: PhotoService,
@@ -66,6 +69,12 @@ export class PhotosPage extends ProtectedPage {
    * @param photo photo object
    */
   getPhotoUrl(photo) {
-    return `url(http://${config.server}/img/users/${photo.filename})`;
+    return `url(http://${config.server}/img/uploads/${photo.filename})`;
+  }
+
+  openPhoto(photo) {
+    let modalOpts = {cssClass: 'photo-modal', showBackdrop: true};
+    let modal = this.modalController.create('photo-modal', {photo: photo}, modalOpts);
+    modal.present();
   }
 }

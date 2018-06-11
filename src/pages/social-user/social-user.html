@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>    
-    <ion-title>{{ 'page.social' | translate }}</ion-title>
+    <ion-title>Perfil</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -14,10 +14,10 @@
           <button ion-button *ngIf="isFollowing" (click)="unfollow()">Deixar de Seguir</button>
       </ion-buttons>
   </ion-navbar>  
-
+  <br>
   <div class="social-header" *ngIf="user">
     <div class="center">
-        <img [src]="userService.getPicture()">
+        <img [src]="userService.getPicture(user)">
         <h2>{{ userService.getFullname(user) }}</h2>
         <p>{{userService.getAddress(user)}}</p>
     </div>

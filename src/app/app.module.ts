@@ -14,20 +14,26 @@ import { ImageResizer } from '@ionic-native/image-resizer';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { Pedometer } from '@ionic-native/pedometer';
 
 import { MyApp } from './app.component';
 import { config } from '../app/config';
 import { Global } from '../helpers/global';
+
 import { UserService } from '../providers/user-service';
+import { StepService } from '../providers/step-service';
 import { StaffService } from '../providers/staff-service';
 import { PhotoService } from '../providers/photo-service';
 import { WaterService } from '../providers/water-service';
 import { FoodService } from '../providers/food-service';
 import { SocialService } from '../providers/social-service';
+import { EmojiService } from '../providers/emoji-service';
 import { WeightService } from '../providers/weight-service';
+import { MessageService } from '../providers/message-service';
 import { MedicineService } from '../providers/medicine-service';
 import { ScheduleService } from '../providers/schedule-service';
 import { ReportService } from '../providers/report-service';
+import { NotificationService } from '../providers/notification-service';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,6 +78,7 @@ export function gettoken (){
     ImageResizer,
     Camera,
     FileTransfer,
+    Pedometer,
 
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PhotoService,
@@ -80,10 +87,14 @@ export function gettoken (){
     ScheduleService,
     StaffService,
     WeightService,
+    EmojiService,
     WaterService,
     MedicineService,
     FoodService,
+    MessageService,
     ReportService,
+    StepService,
+    NotificationService,
     Global
   ]
 })

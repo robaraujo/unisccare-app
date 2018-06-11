@@ -12,6 +12,17 @@ import { ReportService } from '../../providers/report-service';
   templateUrl: 'report-water.html',
 })
 export class ReportWaterPage extends ProtectedPage {
+  
+  public lineChartColors:Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(33, 150, 243,0.2)',
+      borderColor: 'rgba(33, 150, 243,1)',
+      pointBackgroundColor: 'rgba(33, 150, 243,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(33, 150, 243,0.8)'
+    },
+  ];
 
   public waters: any = [];
   public lineChartData:Array<any> = [];
@@ -66,12 +77,12 @@ export class ReportWaterPage extends ProtectedPage {
     let loader = this.loadingCtrl.create();
     loader.present();
     
-    let date = this.global.fromDatetime(this.form.selectedDate).format('YYYY-MM-DD');
-    this.reportService.water(this.form.view, date).subscribe(
+    let mDate = this.global.fromDatetime(this.form.selectedDate);
+    this.reportService.water(this.form.view, mDate.format('YYYY-MM-DD')).subscribe(
       (waters:any)=> {
         loader.dismiss();
         this.waters = waters;
-        this.categorize();
+        this.categorize(mDate);
       },
       err=> {
         loader.dismiss();
@@ -79,11 +90,11 @@ export class ReportWaterPage extends ProtectedPage {
     )
   }
 
-  categorize() {
+  categorize(mDate) {
     
     let grouped = {};
     let data = [];
-    let labels = this.getTimeLabels();
+    let labels = this.global.getTimeLabels(mDate, this.form.view);
 
     this.waters.map(water=> {
       let time = this.getTimeLabel(water.created_at);
@@ -99,42 +110,6 @@ export class ReportWaterPage extends ProtectedPage {
     this.lineChartData = [{data: data, label: 'Água'}];
     // hack for update labels
     setTimeout(() => this.lineChartLabels = labels);
-  }
-
-  /**
-   * Create an obj in the following formats:
-   *   water: {water1: {time1: qtt, time2: qtt}, water2: {time1: qtt, time2: qtt}}
-   *   nutrients: {water1: {'Proteína': qtt, time2: qtt}, Carboidrato: {time1: qtt, time2: qtt}}
-   * @param grouped 
-   * @param water 
-   * @param time 
-   */
-  preCategorize(grouped, water) {
-    
-  }
-
-  /**
-   * Get possible time labels based on view(day, month, year..) selected
-   */
-  private getTimeLabels() {
-    let date = this.global.fromDatetime(this.form.selectedDate);
-    let labels = [];
-
-    if (this.form.view === 'day') {
-      for (let i=1; i<= 23; i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'week') {
-      labels =  moment.weekdaysShort();
-    } else if (this.form.view === 'month') {
-      for (let i=1; i<= date.daysInMonth(); i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'year') {
-      labels = moment.monthsShort();
-    }
-
-    return labels;
   }
 
   /**

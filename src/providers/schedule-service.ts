@@ -16,6 +16,10 @@ export class ScheduleService {
         return this.http.post(config.apiUrl + '/schedules/store', schedule);
     }
 
+    update(schedule) {
+        return this.http.post(config.apiUrl + '/schedules/update/'+schedule.id, schedule);
+    }
+    
     remove(id) {
         return this.http.delete(config.apiUrl + '/schedules/remove/'+id);
     }

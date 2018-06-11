@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title class="center">Ingestão de Alimento</ion-title>
+    <ion-title class="center">Cadastre sua refeição</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,17 +9,55 @@
 
 <ion-content padding>
   <ion-item>
-    <ion-label stacked>Alimento</ion-label>
-    <ion-select [(ngModel)]="food_id">
-      <ion-option *ngFor="let food of foods" [value]="food.id">
-        {{food.name}} {{food.portion+food.unity}}
+    <ion-label>Tipo</ion-label>
+    <ion-select [(ngModel)]="type">
+      <ion-option value="meal">
+        Refeição
+      </ion-option>
+      <ion-option value="food">
+        Alimento
       </ion-option>
     </ion-select>
   </ion-item>
-  <ion-item>
-    <ion-label color="primary">Qtd.</ion-label>
-    <ion-input [(ngModel)]="qtt" type="number" placeholder="1" value="1"></ion-input>
-  </ion-item>
+
+  <div *ngIf="type === 'meal'">
+    <ion-list class="meal-list" radio-group [(ngModel)]="mealId">
+      <ion-item *ngFor="let meal of meals">
+          <ion-label>
+            {{meal.title}}
+
+            <div class="meal-foods">
+              <div *ngFor="let food of meal.foods">
+                {{food.qtt}}x {{food.name+' '+food.portion+food.unity}}
+              </div>
+            </div>
+
+          </ion-label>
+          <ion-radio [value]="meal.id"></ion-radio>
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-grid *ngIf="type === 'food'">
+    <ion-row>
+      <ion-col col-8>
+        <ion-item>
+          <ion-label stacked>Alimento</ion-label>
+          <ion-select [(ngModel)]="food_id">
+            <ion-option *ngFor="let food of foods" [value]="food.id">
+              {{food.name}} {{food.portion+food.unity}}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col col-4>
+        <ion-item>
+          <ion-label stacked color="primary">Qtd.</ion-label>
+          <ion-input [(ngModel)]="qtt" type="number" placeholder="1" value="1"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
 <ion-footer>
   <ion-grid>

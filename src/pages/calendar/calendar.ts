@@ -29,7 +29,7 @@ export class CalendarPage extends ProtectedPage {
     public type: 'date';
 
     /** @var lastMonth last selected month */
-    public lastMonth = '05';
+    public lastMonth = moment().format('MM');
 
     /** @var calendar options of calendar directive */
     public options: CalendarModalOptions = {
@@ -73,14 +73,19 @@ export class CalendarPage extends ProtectedPage {
         );
     }
 
-    formatSchedules(schedlues) {
+    formatSchedules(schedules) {
         this.schedules = {};
         const newOptions = {daysConfig: []};
         
-        schedlues.map(schedule=> {
+        schedules.map(schedule=> {
             let date = moment(schedule.datehr);
             let day = date.format('DD');
             schedule.formatedTime = date.format('HH:mm');
+
+            // check if this schedule is a staff suggestion
+            if (!this.checkStaffSuggestion(schedule)) {
+                return;
+            }
 
             // catecorize schedules by day
             if (!this.schedules[day]) {
@@ -103,6 +108,38 @@ export class CalendarPage extends ProtectedPage {
             };
         }, 2000);
         this.pageReady = true;
+    }
+
+    /**
+     * Return false if user rejects schedule
+     */
+    checkStaffSuggestion(schedule) {
+        let date = moment(schedule.datehr);
+        let formatedTime = date.format('HH:mm');
+
+        if (schedule.staff_id && !schedule.suggestion_accepted) {
+            let dateToApprov = date.format('DD/MM/YYYY')+' às '+formatedTime;
+            let userResp = confirm(
+                `Deseja aprovar seguinte o compromisso enviado pelo médico?\n${schedule.title}, dia ${dateToApprov}`
+            );
+
+            if (!userResp) {
+                this.scheduleService.remove(schedule.id).subscribe(
+                    res=> console.log('removed'),
+                    err=> console.log('not removed'),
+                );
+
+                return false;
+            }
+
+            schedule.suggestion_accepted = 1;
+            this.scheduleService.update(schedule).subscribe(
+                res=> console.log('updated'),
+                err=> console.log('not updated'),
+            );
+        }
+
+        return true;
     }
 
     newEvent() {

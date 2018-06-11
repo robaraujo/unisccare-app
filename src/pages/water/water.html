@@ -20,7 +20,7 @@
 
   <div *ngIf="water && water.length">
       <br>
-      <h4 class="center">Consumo de hoje</h4>
+      <h4 class="center">Ultimas consumos</h4>
       <ion-grid>
           <ion-row *ngFor="let row of water">
             <ion-col col-8>
@@ -32,7 +32,7 @@
           </ion-row>
       </ion-grid>
     </div>
-    <div class="center" *ngIf="water && !water.length">
+    <div class="none-found" *ngIf="water && !water.length">
       Você ainda não consumiu água hoje.
     </div>
 

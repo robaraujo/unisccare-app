@@ -16,21 +16,23 @@
           <button ion-button (click)="showWeightAlert()">Adicionar Peso</button>
       </ion-buttons>
   </ion-navbar>
-  
-  <h4 class="center">Ultimas Pesagens</h4>
-  <div class="wrap-container-chart">
-    <div class="container-chart">
-        <ngx-charts-line-chart
-        [scheme]="{domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']}"
-        [results]="dataChart"
-        [animations]="false"
-        [autoScale]="true"
-        [xAxis]="true"
-        [yAxis]="true"
-        [showGridLines]="showGridLines"
-        [gradient]="true">
-      </ngx-charts-line-chart>
-    </div>
+
+  <div *ngIf="weights && weights.length">
+    <br>
+    <h4 class="center">Ultimas pesagens</h4>
+    <ion-grid>
+        <ion-row *ngFor="let row of weights">
+          <ion-col col-8>
+              {{row.weight+' kg'}}
+          </ion-col>
+          <ion-col col-4>
+            {{moment(row.created_at).format('DD/MM HH:mm')}}
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  </div>
+  <div class="center" *ngIf="weights && !weights.length">
+    Você ainda não consumiu água hoje.
   </div>
 
 </ion-content>

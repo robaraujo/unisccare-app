@@ -1,5 +1,5 @@
 import { Component, ViewChild, group } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController, DateTime } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, DateTime } from 'ionic-angular';
 import { Global } from '../../helpers/global';
 import moment from 'moment';
 import { ProtectedPage } from '../protected-page/protected-page';
@@ -69,7 +69,6 @@ export class ReportFoodPage extends ProtectedPage {
               public alertCtrl: AlertController,
               public reportService: ReportService,
               private loadingCtrl: LoadingController,
-              private modalCtrl: ModalController,
               private global: Global,
               public navParams: NavParams) {
 
@@ -85,12 +84,12 @@ export class ReportFoodPage extends ProtectedPage {
     let loader = this.loadingCtrl.create();
     loader.present();
     
-    let date = this.global.fromDatetime(this.form.selectedDate).format('YYYY-MM-DD');
-    this.reportService.food(this.form.view, date).subscribe(
+    let mDate = this.global.fromDatetime(this.form.selectedDate);
+    this.reportService.food(this.form.view, mDate.format('YYYY-MM-DD')).subscribe(
       (foods:any)=> {
         loader.dismiss();
         this.foods = foods;
-        this.categorize();
+        this.categorize(mDate);
       },
       err=> {
         loader.dismiss();
@@ -98,11 +97,11 @@ export class ReportFoodPage extends ProtectedPage {
     )
   }
 
-  categorize() {
+  categorize(mDate) {
     
     let grouped = {};
     this.lineChartData = [];
-    let labels = this.getTimeLabels();
+    let labels = this.global.getTimeLabels(mDate, this.form.view);
 
     this.foods.map(food=> {
       this.preCategorize(grouped, food);
@@ -165,30 +164,6 @@ export class ReportFoodPage extends ProtectedPage {
   }
 
   /**
-   * Get possible time labels based on view(day, month, year..) selected
-   */
-  private getTimeLabels() {
-    let date = this.global.fromDatetime(this.form.selectedDate);
-    let labels = [];
-
-    if (this.form.view === 'day') {
-      for (let i=1; i<= 23; i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'week') {
-      labels =  moment.weekdaysShort();
-    } else if (this.form.view === 'month') {
-      for (let i=1; i<= date.daysInMonth(); i++) {
-        labels.push( ("0" + i).slice(-2) );
-      }
-    } else if (this.form.view === 'year') {
-      labels = moment.monthsShort();
-    }
-
-    return labels;
-  }
-
-  /**
    * Return x label name. Ex.: 05, 16, Abr
    * @param food 
    */
@@ -240,6 +215,7 @@ export class ReportFoodPage extends ProtectedPage {
     this.form.type = value;
     this.lineChartData = [];
     
-    setTimeout(()=> this.categorize());
+    let mDate = this.global.fromDatetime(this.form.selectedDate);
+    setTimeout(()=> this.categorize(mDate));
   }
 }

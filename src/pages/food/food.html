@@ -13,13 +13,13 @@
 <ion-content>
   <ion-navbar color="primary">
       <ion-buttons end>
-          <button ion-button (click)="addFood()">Adicionar Ingestão</button>
+          <button ion-button (click)="addFood()">Adicionar Consumo</button>
       </ion-buttons>
   </ion-navbar>
 
   <br>
   <div *ngIf="userFoods && userFoods.length">
-    <h4 class="center">Alimentos de hoje</h4>
+    <h4 class="center">Ultimos Alimentos</h4>
     <ion-grid>
         <ion-row *ngFor="let row of userFoods">
           <ion-col col-8>

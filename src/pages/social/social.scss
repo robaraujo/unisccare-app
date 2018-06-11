@@ -16,15 +16,46 @@ page-social {
         }
     }
 
-    .item-post {
+    .item-post, .item-forum, .item-users {
         padding-left: 0;
-    }
 
-    .item-post, .item-forum, .item-following{
+        ion-grid {
+            padding: 0 5px !important;
+        }
+        ion-label {
+            margin: 10px 8px 10px 0 !important;
+        }
+        .social-line-img {
+            text-align: center;
+            padding: 10px;
+        }
+        .social-line-content {
+            padding-top: 15px;
+            padding-left: 8px;
+        }
+
         img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
+        }
+    }
+    .btn-create-forum {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 70px;
+        height: 70px;
+        font-size: 12px;
+        
+        .button-inner {
+            flex-flow: column;
+        }
+
+        ion-icon {
+            font-weight: bold;
+            font-size: 30px;
+            display: block;
         }
     }
 

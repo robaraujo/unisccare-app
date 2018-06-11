@@ -1,3 +1,10 @@
 page-food-form {
-    
+    ion-grid, ion-col {
+        padding: 0 !important;
+    }
+
+    .meal-foods {
+        font-size: 12px;
+        color: #737373;
+    }
 }

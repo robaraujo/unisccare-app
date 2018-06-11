@@ -12,7 +12,8 @@ export class FoodService {
         return this.http.get(config.apiUrl + '/user-food');
     }
 
-    create(userFood) {
-        return this.http.post(config.apiUrl + '/user-food/store', userFood);
+    create(form) {
+        let api = form.type === 'meal' ? 'user-meal' : 'user-food';
+        return this.http.post(config.apiUrl + `/${api}/store`, form);
     }
 }

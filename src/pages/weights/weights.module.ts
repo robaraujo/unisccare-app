@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { WeightsPage } from './weights';
 import { SharedModule } from '../../helpers/shared.module';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -10,8 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   ],
   imports: [
     IonicPageModule.forChild(WeightsPage),
-    SharedModule,
-    NgxChartsModule
+    SharedModule
   ],
   exports: [
     WeightsPage

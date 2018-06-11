@@ -1,15 +1,8 @@
-<ion-header>
-
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>    
-    <ion-title>{{ 'page.journey' | translate }}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
 <ion-content class="padding">
+  <button class="menuToggle" ion-button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+  </button>
+
   <br>
   <div class="center" *ngIf="userService.lostWeight()">
     Você já perdeu <b>{{userService.lostWeight()}}kg</b>
@@ -21,23 +14,46 @@
     Cadastre seus pesos diariamente para acompanhar sua evolução.
   </div>
 
-  <ion-grid>
+  <ion-grid class="monitor-buttons">
     <ion-row>
-      <ion-col>
-        <button ion-button full (click)="openPage('PhotosPage')">
+      <ion-col class="animated jackInTheBox btn1" col-6>
+        <button full (click)="openPage('PhotosPage')">
           <ion-icon name="ios-image"></ion-icon>&nbsp;
-          Fotos
         </button>
+        <div>Fotos</div>
       </ion-col>
-      <ion-col>
-          <button ion-button full (click)="openPage('WeightsPage')">
-            <ion-icon name="md-analytics"></ion-icon>&nbsp;
-            Pesagens
-          </button>
+      <ion-col class="animated jackInTheBox btn2" col-6>
+        <button full (click)="openPage('WeightsPage')">
+          <ion-icon name="md-analytics"></ion-icon>&nbsp;
+        </button>
+        <div>Pesagens</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="animated jackInTheBox btn3" col-6>
+        <button (click)="openPage('FoodPage')">
+          <ion-icon name="ios-nutrition-outline"></ion-icon><br>
+        </button>
+        <div>Refeições</div>
+      </ion-col>
+      <ion-col class="animated jackInTheBox btn4" col-6>
+        <button (click)="openPage('WaterPage')">
+          <ion-icon name="md-beaker"></ion-icon><br>
+        </button>
+        <div>Água</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="animated jackInTheBox btn5" col-6>
+        <button (click)="openPage('MedicinePage')">
+          <ion-icon name="md-medkit"></ion-icon><br>
+        </button>
+        <div>Remédios</div>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-footer>
+<ion-footer class="">
+    <div class="your-progress">Seu Progresso</div>
     <progress-bar *ngIf="userService.timePercent()" [progress]="userService.timePercent()"></progress-bar>
 </ion-footer>

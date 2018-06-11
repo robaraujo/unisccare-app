@@ -12,6 +12,14 @@ export class SocialService {
         return this.http.get(config.apiUrl + '/forum');
     }
 
+    deleteForum(id) {
+        return this.http.delete(config.apiUrl + '/forum/remove/'+id);
+    }
+
+    createForum(name) {
+        return this.http.post(config.apiUrl + '/forum/store', {name: name});
+    }
+
     getForum(id) {
         return this.http.get(config.apiUrl + '/forum/'+id);
     }

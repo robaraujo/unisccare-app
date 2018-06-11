@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { MonitorPage } from './monitor';
+import { NotificationPage } from './notification';
 import { SharedModule } from '../../helpers/shared.module';
 
 @NgModule({
   declarations: [
-    MonitorPage,
+    NotificationPage,
   ],
   imports: [
-    IonicPageModule.forChild(MonitorPage),
+    IonicPageModule.forChild(NotificationPage),
     SharedModule
   ],
   exports: [
-    MonitorPage
+    NotificationPage
   ]
 })
-export class MonitorPageModule {}
+export class NotificationPageModule {}
