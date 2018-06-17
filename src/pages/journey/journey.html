@@ -53,7 +53,7 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-footer class="">
+<ion-footer *ngIf="userService.timePercent()">
     <div class="your-progress">Seu Progresso</div>
-    <progress-bar *ngIf="userService.timePercent()" [progress]="userService.timePercent()"></progress-bar>
+    <progress-bar [progress]="userService.timePercent()"></progress-bar>
 </ion-footer>

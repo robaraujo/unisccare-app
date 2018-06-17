@@ -1,10 +1,9 @@
+const API = '54.233.171.181';
+//const API = 'localhost:8000';
+
 export let config = {
-  //server: 'localhost:8000',
-  //apiUrl: `http://localhost:8000/api`,
-  server: '18.231.113.251',
-  apiUrl: `http://18.231.113.251/api`,
-  //server: '192.168.0.12:8000',
-  //apiUrl: `http://192.168.0.12:8000/api`,
+  server: API,
+  apiUrl: `http://${API}/api`,
   tokenName: 'token',
   user: {
     register: '/register',
