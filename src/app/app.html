@@ -17,7 +17,7 @@
 
   <ion-content>
     <ion-list class="main-menu">
-      <div [ngClass]="p.component" ion-item *ngFor="let p of pages; let i = index" (click)="openPage(p, $event, i)">
+      <div [ngClass]="menuClass(p.component)" ion-item *ngFor="let p of pages; let i = index" (click)="openPage(p, $event, i)">
         
         <ion-icon [name]="p.icon"></ion-icon>
         {{p.title | translate }}

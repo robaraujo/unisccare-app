@@ -16,6 +16,7 @@
 // automatically applied to the <body> element in the app.
  .center {
      text-align: center;
+     margin: auto;
  }
 
  .btn-icon-top {
@@ -29,13 +30,25 @@
     }
  }
 
- .header-menu {
-     color: #fff;
-     .menu-username {
-        font-weight: bold;
-        font-size: 15pt;
-     }
- }
+.menu-inner {
+    .header-menu {
+        color: #fff;
+        .menu-username {
+            font-weight: bold;
+            font-size: 15pt;
+        }
+        img {
+            width: 55px;
+            width: 55px;
+        }
+    }
+    .scroll-content {
+        margin-top: 79px !important;
+    }
+}
+.scroll-content {
+    overflow-y: auto;
+}
 
 ion-menu {
     ion-header {
@@ -225,4 +238,8 @@ ion-header {
 }
 .hidden {
     display: none;
+}
+
+.report-chat {
+    max-height: 100%;
 }

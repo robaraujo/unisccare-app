@@ -56,9 +56,8 @@ export class ReportStepPage extends ProtectedPage {
               public alertCtrl: AlertController,
               public reportService: ReportService,
               private loadingCtrl: LoadingController,
-              private modalCtrl: ModalController,
               public stepService: StepService,
-              private global: Global,
+              public global: Global,
               public navParams: NavParams) {
 
     super(navCtrl, userService);

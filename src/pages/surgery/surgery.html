@@ -11,19 +11,26 @@
 
 <ion-content padding>
   <!--TODO add !youAlreadyRate-->
-  <div *ngIf="!youAlreadyRate" class="center">
-    Você ainda não avaliou o seu cirurgião <b>{{userService.staffInfo('name')}}</b>. Avalie agora:
+  <div *ngIf="!youAlreadyRate && userService.info('staff_id')" class="center">
+    Você ainda não avaliou o sua <b>equipe médica</b>. Avalie agora:
     <rating [(ngModel)]="youRateValue" readOnly="false" (ngModelChange)="youRateChange($event)"></rating>
   </div>
+  <br>
   <hr>
-  <h4 class="center">Avaliações</h4>
   <ion-grid class="med-list">
     <ion-row *ngFor="let med of staffs">
       <ion-col col-3 class="col-img">
         <img [src]="staffService.getPicture(med)">
       </ion-col>
       <ion-col class="center">
-        <div class="med-name">{{med.name}}</div>
+        <div class="med-name">
+            {{med.role}} {{med.name}}
+          </div>
+        <div class="staff-team">
+          <div *ngFor="let member of med.team">
+            {{member.role}} {{member.name}}
+          </div>
+        </div>
         <rating [(ngModel)]="med.avarage" readOnly="true"></rating>
         <div class="med-count-ratings">{{med.total_ratings}} avaliações | {{med.total_comments}} comentários</div>
       </ion-col>

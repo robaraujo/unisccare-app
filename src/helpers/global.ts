@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { ToastController, App, MenuController, LoadingController, Events} from 'ionic-angular';
+import { ToastController, App, MenuController, LoadingController, Events, Platform} from 'ionic-angular';
 import moment from 'moment';
 
 import { UserService } from '../providers/user-service';
@@ -11,10 +11,8 @@ export class Global
 {   
     constructor(private toastCtrl: ToastController,
                 private app: App,
-                public menuCtrl: MenuController,
-                private loadingCtrl: LoadingController,
-                private localNotifications: NotificationService,
-                private userServive: UserService) {
+                private platform: Platform,
+                public menuCtrl: MenuController) {
 
         this.listenEvents();
     }
@@ -27,12 +25,17 @@ export class Global
         let toast = this.toastCtrl.create({
             dismissOnPageChange: true,
             duration: time,
-            position: 'top',
+            position: 'bottom',
             cssClass: 'toast-'+type,
             message: message
         })
         toast.present();
         return toast;
+    }
+
+    isPwa() {
+        return false;
+        //return !this.platform.is('ios') && !this.platform.is('android');
     }
 
     openPage(page, params = {}, push = false) {

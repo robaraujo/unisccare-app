@@ -80,7 +80,6 @@ export class UserService {
   }
 
   public staffInfo(field) {
-    console.log(this.logged)
     return this.logged && this.logged.staff && this.logged.staff[field] !== null ? this.logged.staff[field] : null;
   }
   getFullname(user = null) {

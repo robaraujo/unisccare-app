@@ -86,4 +86,16 @@ export class MyApp {
   openProfilePage() {
     this.global.openPage('ProfilePage');
   }
+
+  menuClass(component) {
+    const hidePwa = this.global.isPwa() && component === 'NotificationPage';
+    const hideEmptyStaff = !this.userService.staffInfo('id') && component === 'MessagesPage';
+
+    let classes = {
+      hidden: hidePwa || hideEmptyStaff
+    };
+
+    classes[component] = true;
+    return classes;
+  }
 }

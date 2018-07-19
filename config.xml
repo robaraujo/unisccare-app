@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.robaraujo.bariunisc" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>BariUnisc</name>
-    <description>Controle de pacientes pós cirurgia bariátrica.</description>
+<widget id="com.robaraujo.unisccare" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>UniscCARE</name>
+    <description>Controle de saúde para pacientes em risco.</description>
     <author email="robaraujo404@gmail.com" href="http://unisc.br/">Roberto Araujo</author>
     <content src="index.html" />
     <access origin="*" />

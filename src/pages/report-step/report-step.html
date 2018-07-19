@@ -36,7 +36,7 @@
     Não encontramos registros para o periodo selecionado.
   </div>
 
-  <div class="step-count-disabled" *ngIf="!stepService.enabled">
+  <div class="step-count-disabled" *ngIf="!stepService.enabled && !global.isPwa()">
     O contador de passos esta desativado
     <button ion-button (click)="global.openPage('ProfilePage', {submenu: 'config'})">
       ATIVAR&nbsp;
@@ -44,8 +44,8 @@
     </button>
   </div>
 
-  <div style="display: block;" *ngIf="lineChartData.length">
-    <canvas baseChart width="300" height="380"
+  <div class="report-chat" style="display: block;" *ngIf="lineChartData.length">
+    <canvas baseChart
         [datasets]="lineChartData"
         [labels]="lineChartLabels"
         [options]="lineChartOptions"

@@ -18,18 +18,19 @@ export class MessageService {
     }
 
     startPolling() {
-        if (this.intervalPolling) return;
-
-        this.intervalPolling = setInterval(() => {
+        if (this.intervalPolling) return false;
+        
+        let getChat = ()=> {
             this.getChat().subscribe(
                 (msgs:any)=> {
                     msgs.map((msg)=> this.msgs.push(msg))
                 },
-                err=> {
-                    console.error(err);
-                }
+                err=> console.error(err)
             );
-        }, 5000);
+        };
+
+        getChat();
+        this.intervalPolling = setInterval(() => getChat(), 5000);
     }
 
     stopPolling() {

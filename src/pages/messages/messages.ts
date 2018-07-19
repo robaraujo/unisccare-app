@@ -1,10 +1,11 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ModalController, Content, Events } from 'ionic-angular';
 import { MessageService } from '../../providers/message-service';
 import { config } from '../../app/config';
+import moment from 'moment';
+
 import { ProtectedPage } from '../protected-page/protected-page';
 import { UserService } from '../../providers/user-service';
-import moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,7 @@ export class MessagesPage extends ProtectedPage {
               public userService: UserService,
               public messageService: MessageService,
               private loadingCtrl: LoadingController,
-              private modalController: ModalController,
+              private zone: NgZone,
               private events: Events,
               public navParams: NavParams) {
                 
@@ -39,9 +40,7 @@ export class MessagesPage extends ProtectedPage {
   }
 
   ionViewDidEnter() {
-    //get message list
     this.messageService.startPolling();
-    this.getMsg();
   }
 
   onFocus() {
@@ -59,23 +58,6 @@ export class MessagesPage extends ProtectedPage {
     }
     this.content.resize();
     this.scrollToBottom();
-  }
-
-  /**
-   * @name getMsg
-   * @returns {Promise<ChatMessage[]>}
-   */
-  getMsg() {
-    // Get mock message list
-    return this.messageService.getChat().subscribe(
-        (res:any) => {
-          this.messageService.msgs = res;
-          //this.scrollToBottom();
-        },
-        err=> {
-          console.log('err');
-        }
-      );
   }
 
   /**

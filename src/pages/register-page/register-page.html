@@ -11,99 +11,96 @@
 
 
 <ion-content padding>
+  <form col-sm-6 [formGroup]="regData" (ngSubmit)="register()">
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>Nome:</ion-label>
+            <ion-input type="text" formControlName="first_name"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+            <ion-item>
+              <ion-label floating>Sobrenome:</ion-label>
+              <ion-input type="text" formControlName="last_name"></ion-input>
+            </ion-item>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>{{ 'label.email' | translate }}:</ion-label>
+            <ion-input type="email" formControlName="email"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>{{ 'label.password' | translate }}:</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>{{ 'label.confirm_password' | translate }}:</ion-label>
+            <ion-input type="password" formControlName="confirm_password"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <h5 class="center optional-fields">Campos Opcionais:</h5>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>Idade:</ion-label>
+            <ion-input type="number" formControlName="age"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>Peso Atual:</ion-label>
+            <ion-input type="number" formControlName="first_weight"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>Data Operação:</ion-label>
+            <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_operation"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label floating>Final do tratamento:</ion-label>
+            <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_end"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <h5 class="center optional-fields">Equipe Médica:</h5>
+    <div radio-group  formControlName="staff_id">
+      <ion-item *ngFor="let staff of staffs">
+          <ion-label>
+            {{staff.role}} {{staff.name}}
 
-  <ion-grid>
-    <ion-row justify-content-around>
-      <ion-col col-sm-6 col-md-6 col-lg-4 col-xl-3  align-self-center>
-        <form [formGroup]="regData" (ngSubmit)="register()">
-          
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Nome:</ion-label>
-                  <ion-input type="text" formControlName="first_name"></ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col>
-                  <ion-item>
-                    <ion-label floating>Sobrenome:</ion-label>
-                    <ion-input type="text" formControlName="last_name"></ion-input>
-                  </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>{{ 'label.email' | translate }}:</ion-label>
-                  <ion-input type="email" formControlName="email"></ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>{{ 'label.password' | translate }}:</ion-label>
-                  <ion-input type="password" formControlName="password"></ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>{{ 'label.confirm_password' | translate }}:</ion-label>
-                  <ion-input type="password" formControlName="confirm_password"></ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+            <div class="staff-team">
+              <div *ngFor="let member of staff.team">
+                -{{member.role}} {{member.name}}
+              </div>
+            </div>
 
-          <h5 class="center">Campos Opcionais:</h5>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Idade:</ion-label>
-                  <ion-input type="number" formControlName="age"></ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Peso Atual:</ion-label>
-                  <ion-input type="number" formControlName="first_weight"></ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Data Operação:</ion-label>
-                  <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_operation"></ion-datetime>
-                </ion-item>
-              </ion-col>
-              <ion-col>
-                <ion-item>
-                  <ion-label floating>Final do tratamento:</ion-label>
-                  <ion-datetime [max]="maxDate" displayFormat="DD/MM/YYYY" formControlName="dt_end"></ion-datetime>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label stacked>Seu Cirurgião</ion-label>
-                  <ion-select formControlName="staff_id">
-                    <ion-option *ngFor="let staff of staffs" [value]="staff.id">
-                      #{{staff.id}} {{staff.name}}
-                    </ion-option>
-                  </ion-select>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-
-          <button margin-top ion-button type="submit" [disabled]="!regData.valid">{{ 'button.register' | translate  }}</button>
-
-        </form>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+          </ion-label>
+          <ion-radio [value]="staff.id"></ion-radio>
+      </ion-item>
+    </div>
+  </form>
 </ion-content>
+<ion-footer>
+    <button margin-top ion-button block type="submit" (click)="register()" [disabled]="!regData.valid">{{ 'button.register' | translate  }}</button>
+</ion-footer>
+
